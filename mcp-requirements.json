@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "site-in-a-box-mcp-requirements",
+  "version": "1.0.0",
+  "description": "MCP server requirements for the Site-in-a-Box AI agent to research users online",
+  "recommended_servers": [
+    {
+      "name": "exa",
+      "description": "Exa AI-powered search for finding professional information, GitHub profiles, and technical content",
+      "npm_package": "@anthropic/mcp-server-exa",
+      "required_env": ["EXA_API_KEY"],
+      "priority": "high",
+      "use_cases": [
+        "Deep search for user's professional background",
+        "Finding GitHub repositories and contributions",
+        "Discovering blog posts and technical writing",
+        "Locating conference talks and presentations"
+      ],
+      "example_config": {
+        "mcpServers": {
+          "exa": {
+            "command": "npx",
+            "args": ["-y", "@anthropic/mcp-server-exa"],
+            "env": {
+              "EXA_API_KEY": "your-exa-api-key"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "brave-search",
+      "description": "Brave Search API for general web search queries",
+      "npm_package": "@anthropic/mcp-server-brave-search",
+      "required_env": ["BRAVE_API_KEY"],
+      "priority": "medium",
+      "use_cases": [
+        "General web search for user mentions",
+        "Finding news articles and features",
+        "Locating company information"
+      ],
+      "example_config": {
+        "mcpServers": {
+          "brave-search": {
+            "command": "npx",
+            "args": ["-y", "@anthropic/mcp-server-brave-search"],
+            "env": {
+              "BRAVE_API_KEY": "your-brave-api-key"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "fetch",
+      "description": "Web fetching for reading specific URLs like LinkedIn profiles or personal websites",
+      "npm_package": "@anthropic/mcp-server-fetch",
+      "required_env": [],
+      "priority": "high",
+      "use_cases": [
+        "Reading GitHub profile pages",
+        "Fetching personal website content",
+        "Extracting data from portfolio sites"
+      ],
+      "example_config": {
+        "mcpServers": {
+          "fetch": {
+            "command": "npx",
+            "args": ["-y", "@anthropic/mcp-server-fetch"]
+          }
+        }
+      }
+    },
+    {
+      "name": "github",
+      "description": "GitHub API access for detailed repository and contribution analysis",
+      "npm_package": "@anthropic/mcp-server-github",
+      "required_env": ["GITHUB_PERSONAL_ACCESS_TOKEN"],
+      "priority": "high",
+      "use_cases": [
+        "Listing user repositories",
+        "Analyzing contribution statistics",
+        "Reading repository READMEs",
+        "Getting language breakdown"
+      ],
+      "example_config": {
+        "mcpServers": {
+          "github": {
+            "command": "npx",
+            "args": ["-y", "@anthropic/mcp-server-github"],
+            "env": {
+              "GITHUB_PERSONAL_ACCESS_TOKEN": "your-github-token"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "optional_servers": [
+    {
+      "name": "firecrawl",
+      "description": "Advanced web scraping for complex pages",
+      "npm_package": "@anthropic/mcp-server-firecrawl",
+      "required_env": ["FIRECRAWL_API_KEY"],
+      "priority": "low"
+    }
+  ],
+  "configuration_location": {
+    "macos": "~/Library/Application Support/Claude/claude_desktop_config.json",
+    "windows": "%APPDATA%\\Claude\\claude_desktop_config.json",
+    "linux": "~/.config/Claude/claude_desktop_config.json",
+    "claude_code": "~/.claude.json or project .claude/settings.json"
+  }
+}
