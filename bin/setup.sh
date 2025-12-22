@@ -116,15 +116,20 @@ launch_agent() {
         INSTRUCTIONS_FILE="$PROJECT_DIR/.agent/instructions.md"
 
         if [ -f "$INSTRUCTIONS_FILE" ]; then
-            echo -e "${PURPLE}Starting Claude Code with Architect instructions...${NC}"
+            echo -e "${PURPLE}Starting Claude Code session...${NC}"
             echo ""
+            echo -e "${YELLOW}I'm going to launch Claude Code now.${NC}"
+            echo -e "${YELLOW}When it starts, tell Claude:${NC}"
+            echo ""
+            echo -e "  ${CYAN}\"I want to build my portfolio. Please read the instructions in${NC}"
+            echo -e "  ${CYAN}.agent/instructions.md and help me populate my site.\"${NC}"
+            echo ""
+            echo -e "Press Enter to continue..."
+            read -r
 
-            # Read the instructions and launch Claude Code with them
-            INSTRUCTIONS=$(cat "$INSTRUCTIONS_FILE")
-
-            # Launch Claude Code with the instructions as initial prompt
+            # Launch Claude Code in the project directory
             cd "$PROJECT_DIR"
-            claude --print "I am the Site-in-a-Box Architect Agent. I've read my instructions from .agent/instructions.md and I'm ready to help you build your portfolio. Let's get started! What's your name and can you share a link to your GitHub or LinkedIn profile?"
+            exec claude
         else
             echo -e "${RED}Error: Instructions file not found at $INSTRUCTIONS_FILE${NC}"
             exit 1
