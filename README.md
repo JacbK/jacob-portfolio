@@ -288,7 +288,29 @@ Increase `ai.copy_creativity` and `ai.quality_bar` in the config. Also fill out 
 
 ## How It Avoids Looking Like AI
 
-The instructions tell the AI to:
+### Design Diversity System
+
+**Every portfolio gets a unique visual identity** by randomly selecting 1 of 6 aesthetic archetypes:
+
+1. **Brutalist** - Sharp edges, monospace fonts, high contrast, no shadows
+2. **Editorial** - Magazine layouts, serif headers, asymmetric columns
+3. **Technical Terminal** - Command-line aesthetic, monospace only, CRT colors
+4. **Warm Minimal** - Cream backgrounds, generous spacing, soft shadows
+5. **Bold Geometric** - Color blocking, shapes, high contrast
+6. **Refined Luxury** - Elegant serifs, gold/silver accents, large whitespace
+
+Each archetype has:
+- **3 specific font pairings** (header + body)
+- **3 distinct color palettes** (primary + secondary + accent)
+- **Unique layout patterns** (grid systems, spacing, borders)
+
+The AI randomly picks an archetype, then commits 100% to that visual direction. No blending, no hedging.
+
+**Result**: Even with identical content, two portfolios will look completely different.
+
+### Anti-AI Content Patterns
+
+The instructions also enforce:
 - Use odd numbers (3 columns, not 4)
 - Vary typography scale (18px, 28px, not 16px, 24px)
 - Add intentional imperfection (asymmetric spacing)
@@ -296,7 +318,7 @@ The instructions tell the AI to:
 - Lead with what makes you unique, not what makes you qualified
 - Write problem → solution → impact, not feature lists
 
-Plus the self-grading forces it to catch generic patterns.
+The self-grading system auto-fails generic patterns.
 
 ## Stack
 

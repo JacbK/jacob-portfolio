@@ -63,6 +63,22 @@ export interface ExperienceMeta {
   end_date?: string;
 }
 
+export interface DesignMetadata {
+  archetype: 1 | 2 | 3 | 4 | 5 | 6;
+  archetype_name: 'Brutalist' | 'Editorial' | 'Technical Terminal' | 'Warm Minimal' | 'Bold Geometric' | 'Refined Luxury';
+  font_pairing: {
+    header: string;
+    body: string;
+  };
+  color_palette: {
+    name: string; // e.g., "Palette A", "Palette B", "Palette C"
+    primary: string;
+    secondary: string;
+    accent: string;
+  };
+  randomization_seed?: string; // timestamp or random value to document uniqueness
+}
+
 export interface DataMeta {
   last_refresh?: string;
   last_full_build?: string;
@@ -72,6 +88,7 @@ export interface DataMeta {
   };
   auto_fields?: string[];
   manual_fields?: string[];
+  design?: DesignMetadata;
 }
 
 export interface UserProfile {
