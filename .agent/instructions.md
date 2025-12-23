@@ -77,6 +77,12 @@ If materials exist, extract info from them. If not, rely on web research.
 
 ## Phase 1: Research & Discovery
 
+### Initial Research Approach
+
+**IMPORTANT**: Your goal is to gather FACTUAL information, not to invent compelling narratives.
+
+**Principle**: When in doubt, ask. Never assume.
+
 ### Gather Information
 
 **From Materials** (if provided):
@@ -128,6 +134,51 @@ Based on `ai.research_depth` in profile.yaml:
 - **4-6**: GitHub + web search + personal site (5-10 queries)
 - **7-8**: Deep search across multiple sources, find hidden gems (15-20 queries)
 - **9-10**: Exhaustive research, find everything they've ever published (30+ queries)
+
+---
+
+## Phase 1.5: Ask Clarifying Questions
+
+**BEFORE writing any content**, review your research and identify gaps:
+
+### Questions You Should Ask
+
+**About Experience**:
+- "I see you worked at [Company] as [Role]. What specific projects or areas did you work on?"
+- "What was the impact or outcome of your work on [Project]?"
+- "Can you share any metrics about [Project]? (users, performance improvements, etc.)"
+
+**About Projects**:
+- "I found [Project] on your GitHub. What problem were you trying to solve?"
+- "How many people use [Project]? Or was it mostly a learning exercise?"
+- "What were the key technical challenges you solved?"
+
+**About Skills/Technologies**:
+- "I see you've used [Technology]. In what context? (production, side projects, learning)"
+- "Which technologies are you most experienced with vs. just familiar with?"
+
+**About Career Direction**:
+- "What kind of role are you looking for next?"
+- "What do you want to emphasize: technical depth, breadth, leadership, or building?"
+- "Any specific companies or industries you're targeting?"
+
+**About Tone/Style**:
+- "How formal should your portfolio be? (corporate-professional vs. casual-authentic)"
+- "Any examples of portfolios or writing styles you like?"
+
+### When NOT to Ask
+
+- Don't ask about things clearly documented in materials (resume dates, public GitHub stats)
+- Don't ask about technologies if they're obvious from commit history
+- Don't ask yes/no questions - ask open-ended ones that get details
+
+### How to Ask
+
+Use the `AskUserQuestion` tool with **specific, contextual questions**:
+- ❌ "Tell me about your experience" (too broad)
+- ✅ "What did you work on at Uber? I see you were a Software Engineer there 2021-2023 but want to make sure I describe your role accurately."
+
+**Ask 3-5 questions at a time** in logical groups (all experience questions together, all project questions together).
 
 ---
 
@@ -195,6 +246,44 @@ Based on `ai.research_depth` in profile.yaml:
 1. Why it exists (the problem)
 2. What it does (the solution)
 3. Impact (usage, results, or what you learned)
+
+### CRITICAL: Don't Make Assumptions or Exaggerate
+
+**NEVER assume or inflate impact based on company name or role:**
+
+❌ **BAD - Making assumptions**:
+- "Engineer at Uber" → "Built systems serving billions of rides"
+- "Frontend at Netflix" → "Delivered streaming to millions of users"
+- "Worked on payments" → "Processed $X million in transactions"
+
+✅ **GOOD - Stick to facts or ask**:
+- "Engineer at Uber" → Ask: "What did you work on at Uber?"
+- "Frontend at Netflix" → Use only what's verifiable from GitHub/materials
+- If uncertain about impact → Ask user instead of guessing
+
+**When to Ask the User**:
+- Impact metrics you can't verify (user counts, revenue, scale)
+- Specific project outcomes or results
+- Role responsibilities that aren't clear from research
+- Technical decisions or architecture choices they made
+- Why they chose certain technologies or approaches
+
+**Use the AskUserQuestion tool liberally**. It's better to ask 5-10 clarifying questions than to write a single exaggerated or inaccurate statement.
+
+**What You CAN infer**:
+- Technologies used (from GitHub repos, package.json, etc.)
+- Open source contributions (visible commit history)
+- Project existence (if it's public and documented)
+- Time periods at companies (from LinkedIn dates, if accessible)
+
+**What You CANNOT infer**:
+- Scale or impact ("millions of users", "enterprise-scale")
+- Specific responsibilities beyond job title
+- Revenue, conversion rates, performance improvements
+- Team size, leadership roles, or scope
+- Business outcomes or metrics
+
+**If you find yourself writing numbers without a source, STOP and ask the user.**
 
 ---
 

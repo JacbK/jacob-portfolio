@@ -18,58 +18,52 @@ Most AI portfolio generators spit out the same generic template with your name s
 git clone https://github.com/your-username/site-in-a-box.git my-portfolio
 cd my-portfolio
 
-# Copy the config template
-cp profile.example.yaml profile.yaml
-
-# Optional but recommended: Add your materials
-cp ~/resume.pdf materials/documents/
-cp ~/headshot.jpg materials/images/profile.jpg
-
-# Fill out your preferences
-open profile.yaml  # Or use your editor of choice
-
-# Run the setup (handles npm install + AI)
+# Run setup (handles everything)
 ./bin/setup.sh
 ```
 
+**That's it!** The setup script will:
+1. Install dependencies
+2. Guide you through config (visual UI or YAML)
+3. Launch AI to build your portfolio
+
 The AI will:
-- Read your config
-- Research you online (GitHub, LinkedIn, etc.)
+- Research you online (GitHub, web search)
 - Extract info from your resume if provided
-- Generate content and design
-- Grade itself and iterate until it meets your quality bar
-- Build your portfolio
+- Generate content and design based on your preferences
+- Self-grade and iterate until it's excellent
+- Build your complete portfolio
 
-## The Config File
-
-You have two options for configuring your portfolio:
-
-### Option 1: Visual Config UI (Recommended)
-
+**Optional**: Add materials before running setup:
 ```bash
-npm install
-npm run dev
-# Visit http://localhost:3000/config
+cp ~/resume.pdf materials/documents/
+cp ~/headshot.jpg materials/images/profile.jpg
 ```
 
-The visual config UI lets you:
-- **Fill out basic info** (name, email, social links)
-- **Adjust design sliders** visually with real-time previews
-- **Pick a visual style** by clicking on websites you like
-- **Download your profile.yaml** when done
+## Configuration
 
-The AI will suggest an archetype based on the websites you select. Click 3-4 sites you admire, and it'll recommend the matching aesthetic.
+The setup script gives you two options:
 
-### Option 2: Edit YAML Directly
+**Option 1: Visual UI** (recommended)
+- Opens browser at `localhost:3000/config`
+- Fill out form, pick visual style, download config
+- Simple, visual, guided
 
-Copy and edit the config template:
+**Option 2: YAML Editor**
+- Opens `profile.yaml` in your editor
+- Minimal setup: just add your name
+- Everything else is optional
 
-```bash
-cp profile.example.yaml profile.yaml
-open profile.yaml  # or use your editor
-```
+### What You Need to Provide
 
-**Most fields are optional!** Only `name` is required. The AI will research and fill in what's missing.
+**Required:**
+- Your name
+
+**Optional** (AI will research if missing):
+- Email, GitHub, LinkedIn
+- Design preferences (defaults to balanced)
+- Content tone and focus
+- Personal notes about yourself
 
 #### Design Sliders (1-10)
 
@@ -318,6 +312,13 @@ This is normal - LinkedIn blocks scrapers. The AI will automatically fall back t
 
 **"I want a specific design style, not random"**
 Use the visual config UI at `/config` (dev mode) to select websites you like, or set `design.archetype` to 1-6 in profile.yaml to force a specific aesthetic.
+
+**"Claude keeps asking permission to visit websites"**
+Run this once to auto-approve web searches:
+```bash
+./bin/configure-claude.sh
+```
+This creates `~/.claude/settings.json` with auto-approval for web tools.
 
 ## How It Avoids Looking Like AI
 

@@ -1,194 +1,139 @@
 #!/bin/bash
 
-# Site-in-a-Box: Bootstrap Script
-# This script initializes the AI-powered portfolio builder
+# Site-in-a-Box: Unified Setup Script
 
-set -e
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
-# Colors for output
-RED='\033[0;31m'
+# Colors
+CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# ASCII Art Banner
-print_banner() {
-    echo -e "${CYAN}"
-    cat << "EOF"
-  ____  _ _            _               ____
- / ___|(_) |_ ___     (_)_ __         | __ )  _____  __
- \___ \| | __/ _ \____| | '_ \ _____ _|  _ \ / _ \ \/ /
-  ___) | | ||  __/____| | | | |_____| | |_) | (_) >  <
- |____/|_|\__\___|    |_|_| |_|     |_|____/ \___/_/\_\
+clear
+
+echo -e "${CYAN}"
+cat << "EOF"
+   ____  _ __                _                ____
+  / ___|(_) /____     ()__   ( ) __           | __ )  _____  __
+  \___ \| | __/ _ \  / / -_) |/ / _ \ ________|  _ \ / _ \ \/ /
+   ___) | | ||  __/ / / \__     / (_) |_______| |_) | (_) >  <
+  |____/|_|\__\___|/_/\____|    \___/        |____/ \___/_/\_\
 
 EOF
-    echo -e "${NC}"
-    echo -e "${PURPLE}AI-Powered Personal Portfolio Generator${NC}"
-    echo ""
-}
+echo -e "${NC}"
 
-# Check for required tools
-check_dependencies() {
-    echo -e "${BLUE}[1/5]${NC} Checking dependencies..."
+echo -e "${GREEN}AI-Powered Portfolio Generator${NC}"
+echo ""
 
-    # Check for Node.js
-    if ! command -v node &> /dev/null; then
-        echo -e "${RED}Error: Node.js is not installed.${NC}"
-        echo "Please install Node.js 18+ from https://nodejs.org"
-        exit 1
-    fi
+cd "$PROJECT_DIR"
 
-    NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
-    if [ "$NODE_VERSION" -lt 18 ]; then
-        echo -e "${RED}Error: Node.js 18+ is required. Found v${NODE_VERSION}${NC}"
-        exit 1
-    fi
-    echo -e "  ${GREEN}✓${NC} Node.js $(node -v)"
-
-    # Check for npm
-    if ! command -v npm &> /dev/null; then
-        echo -e "${RED}Error: npm is not installed.${NC}"
-        exit 1
-    fi
-    echo -e "  ${GREEN}✓${NC} npm $(npm -v)"
-
-    # Check for profile.yaml
-    if [ ! -f "profile.yaml" ]; then
-        echo -e "  ${YELLOW}!${NC} profile.yaml not found"
-        echo ""
-        echo -e "${YELLOW}You need to create your profile config first:${NC}"
-        echo -e "  ${CYAN}cp profile.example.yaml profile.yaml${NC}"
-        echo ""
-        echo "Then edit profile.yaml with your information and preferences."
-        echo ""
-        exit 1
-    fi
-    echo -e "  ${GREEN}✓${NC} profile.yaml found"
-
-    # Check for Claude Code
-    CLAUDE_CODE_INSTALLED=false
-    if command -v claude &> /dev/null; then
-        CLAUDE_CODE_INSTALLED=true
-        echo -e "  ${GREEN}✓${NC} Claude Code detected"
-    else
-        echo -e "  ${YELLOW}!${NC} Claude Code not found"
-    fi
-
-    echo ""
-}
-
-# Install npm dependencies
-install_dependencies() {
-    echo -e "${BLUE}[2/5]${NC} Installing dependencies..."
-    npm install --silent
+# Step 1: Install dependencies
+if [ ! -d "node_modules" ]; then
+    echo -e "${CYAN}[1/3]${NC} Installing dependencies..."
+    npm install > /dev/null 2>&1
     echo -e "  ${GREEN}✓${NC} Dependencies installed"
+else
+    echo -e "${CYAN}[1/3]${NC} Dependencies already installed"
+fi
+
+# Step 2: Check for profile.yaml
+if [ ! -f "profile.yaml" ]; then
     echo ""
-}
-
-# Create initial data file if it doesn't exist
-setup_data_file() {
-    echo -e "${BLUE}[3/5]${NC} Setting up data files..."
-
-    DATA_DIR="src/data"
-    DATA_FILE="$DATA_DIR/user.json"
-
-    if [ ! -f "$DATA_FILE" ]; then
-        mkdir -p "$DATA_DIR"
-        echo '{}' > "$DATA_FILE"
-        echo -e "  ${GREEN}✓${NC} Created empty user.json"
-    else
-        echo -e "  ${GREEN}✓${NC} user.json already exists"
-    fi
+    echo -e "${CYAN}[2/3]${NC} No profile.yaml found"
     echo ""
-}
+    echo -e "${YELLOW}Choose your setup method:${NC}"
+    echo ""
+    echo "  1) Visual Config UI (recommended)"
+    echo "     → Opens browser, fill out form, download config"
+    echo ""
+    echo "  2) Manual YAML editing"
+    echo "     → Opens template in editor"
+    echo ""
+    read -p "Enter choice (1 or 2): " choice
 
-# Verify profile configuration
-verify_profile() {
-    echo -e "${BLUE}[4/5]${NC} Verifying profile configuration..."
-
-    # Basic check that profile.yaml has been filled out
-    if grep -q 'name: ""' profile.yaml; then
-        echo -e "  ${YELLOW}⚠${NC}  Your profile.yaml appears to be empty"
+    if [ "$choice" = "1" ]; then
         echo ""
-        echo "Make sure you've filled out at least:"
-        echo "  - name"
-        echo "  - github or linkedin"
-        echo "  - design preferences (or keep defaults)"
+        echo -e "${GREEN}Starting config UI...${NC}"
+        echo -e "  ${CYAN}→${NC} Opening http://localhost:3000/config"
         echo ""
-        echo -e "Press Enter to continue anyway, or Ctrl+C to exit and edit..."
-        read -r
-    else
-        echo -e "  ${GREEN}✓${NC} Profile configuration looks good"
-    fi
-    echo ""
-}
+        echo "  Steps:"
+        echo "    1. Fill out your name (required)"
+        echo "    2. Pick a visual style"
+        echo "    3. Adjust sliders (optional)"
+        echo "    4. Click 'Download' button"
+        echo "    5. Save as 'profile.yaml' in this folder"
+        echo "    6. Press Ctrl+C here when done"
+        echo ""
 
-# Launch the AI agent
-launch_agent() {
-    echo -e "${BLUE}[5/5]${NC} Launching AI Architect..."
-    echo ""
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo ""
-    echo -e "  ${GREEN}Welcome to your AI-generated portfolio.${NC}"
-    echo -e "  ${GREEN}I am initializing the Architect agent now...${NC}"
-    echo ""
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo ""
+        # Start dev server and wait
+        npm run dev
 
-    if [ "$CLAUDE_CODE_INSTALLED" = true ]; then
-        # Get the directory of this script
-        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-        PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-        INSTRUCTIONS_FILE="$PROJECT_DIR/.agent/instructions.md"
-
-        if [ -f "$INSTRUCTIONS_FILE" ]; then
-            echo -e "${PURPLE}Starting Claude Code session...${NC}"
+        # After they stop the server
+        echo ""
+        if [ ! -f "profile.yaml" ]; then
+            echo -e "${YELLOW}Waiting for profile.yaml...${NC}"
+            echo "  ${CYAN}→${NC} Check your Downloads folder"
+            echo "  ${CYAN}→${NC} Move profile.yaml to: $PROJECT_DIR"
             echo ""
-            echo -e "${YELLOW}I'm going to launch Claude Code now.${NC}"
-            echo -e "${YELLOW}When it starts, tell Claude:${NC}"
-            echo ""
-            echo -e "  ${CYAN}\"I want to build my portfolio. Please read the instructions in${NC}"
-            echo -e "  ${CYAN}.agent/instructions.md and help me populate my site.\"${NC}"
-            echo ""
-            echo -e "Press Enter to continue..."
-            read -r
-
-            # Launch Claude Code in the project directory
-            cd "$PROJECT_DIR"
-            exec claude
-        else
-            echo -e "${RED}Error: Instructions file not found at $INSTRUCTIONS_FILE${NC}"
-            exit 1
+            read -p "Press Enter when profile.yaml is ready..."
         fi
     else
-        echo -e "${YELLOW}Claude Code is not installed.${NC}"
         echo ""
-        echo "To complete the setup, please install Claude Code:"
-        echo -e "  ${CYAN}npm install -g @anthropic-ai/claude-code${NC}"
+        cp profile.example.yaml profile.yaml
+        echo -e "${GREEN}✓ Created profile.yaml${NC}"
         echo ""
-        echo "Then run this script again, or manually start Claude Code in this directory"
-        echo "and ask it to read the instructions from .agent/instructions.md"
+        echo -e "${YELLOW}Opening in editor...${NC}"
+        echo "  ${CYAN}→${NC} Edit your name (required)"
+        echo "  ${CYAN}→${NC} Everything else is optional"
         echo ""
-        echo -e "${GREEN}Alternatively, you can manually populate src/data/user.json${NC}"
-        echo "following the schema in src/data/schema.ts"
-        echo ""
-        echo "To start the development server now:"
-        echo -e "  ${CYAN}npm run dev${NC}"
+
+        # Try to open in best available editor
+        if command -v code &> /dev/null; then
+            code profile.yaml
+        elif command -v nano &> /dev/null; then
+            nano profile.yaml
+        else
+            open profile.yaml 2>/dev/null || xdg-open profile.yaml 2>/dev/null
+        fi
+
+        read -p "Press Enter when done editing..."
     fi
-}
+else
+    echo ""
+    echo -e "${CYAN}[2/3]${NC} Found profile.yaml ✓"
+fi
 
-# Main execution
-main() {
-    clear
-    print_banner
-    check_dependencies
-    install_dependencies
-    setup_data_file
-    verify_profile
-    launch_agent
-}
+# Verify profile.yaml exists
+if [ ! -f "profile.yaml" ]; then
+    echo ""
+    echo -e "${YELLOW}Error: profile.yaml not found${NC}"
+    echo "  Please create it and run ./bin/setup.sh again"
+    exit 1
+fi
 
-main "$@"
+# Step 3: Launch AI
+echo ""
+echo -e "${CYAN}[3/3]${NC} Launching AI generator..."
+echo ""
+echo -e "${GREEN}The AI will now:${NC}"
+echo "  • Research you online (GitHub, web search)"
+echo "  • Generate your content & design"
+echo "  • Self-grade and iterate"
+echo "  • Build your portfolio"
+echo ""
+
+# Check if we should auto-approve web fetches
+if [ ! -f "$HOME/.claude/settings.json" ]; then
+    echo -e "${YELLOW}Tip:${NC} To stop Claude from asking permission for each website:"
+    echo ""
+    echo "  Create: ~/.claude/settings.json"
+    echo "  Add: {\"autoApproveTools\": [\"web_fetch\", \"web_search\"]}"
+    echo ""
+    echo "Press Enter to continue..."
+    read -r
+fi
+
+# Launch Claude Code with instructions loaded
+exec claude chat -f "$PROJECT_DIR/.agent/instructions.md"
