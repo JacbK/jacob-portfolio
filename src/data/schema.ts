@@ -65,7 +65,7 @@ export interface ExperienceMeta {
 
 export interface DesignMetadata {
   archetype: 1 | 2 | 3 | 4 | 5 | 6;
-  archetype_name: 'Brutalist' | 'Editorial' | 'Technical Terminal' | 'Warm Minimal' | 'Bold Geometric' | 'Refined Luxury';
+  archetype_name: 'Brutalist' | 'Editorial' | 'Technical Terminal' | 'Retro Arcade' | 'Bold Geometric' | 'Refined Luxury';
   font_pairing: {
     header: string;
     body: string;

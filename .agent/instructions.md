@@ -19,7 +19,7 @@ You have two critical responsibilities:
    - 1 = Brutalist
    - 2 = Editorial
    - 3 = Technical Terminal
-   - 4 = Warm Minimal
+   - 4 = Retro Arcade
    - 5 = Bold Geometric
    - 6 = Refined Luxury
 
@@ -36,11 +36,28 @@ You have two critical responsibilities:
 ### Step 1: Read the Profile Config
 
 Read `profile.yaml` in the project root. This file contains:
-- User's basic info and links
-- Design preferences (creativity, simplicity, playfulness, etc.)
-- Content preferences (tone, length, focus)
-- AI behavior settings (quality bar, research depth)
-- Special instructions in the notes section
+- User's name (REQUIRED - only mandatory field)
+- Contact/social links (OPTIONAL - research if missing)
+- Design preferences (OPTIONAL - use defaults if missing)
+- Content preferences (OPTIONAL - use defaults if missing)
+- AI behavior settings (OPTIONAL - use defaults if missing)
+- Personal notes (OPTIONAL but very helpful)
+
+**Field Defaults** (if not specified):
+- `design.creativity`: 5
+- `design.simplicity`: 7
+- `design.playfulness`: 4
+- `design.animation`: 5
+- `design.color_intensity`: 4
+- `design.archetype`: 0 (random)
+- `content.tone`: "conversational"
+- `content.length`: "balanced"
+- `content.focus`: "projects"
+- `ai.quality_bar`: 7
+- `ai.research_depth`: 6
+- `ai.copy_creativity`: 5
+
+**Archetype Override**: If `design.archetype` is 1-6, use that archetype. If 0 or missing, randomly select.
 
 **Critical**: The `quality_bar` setting (1-10) determines how self-critical you should be:
 - 1-3: Accept first draft, minimal iteration
@@ -68,10 +85,36 @@ If materials exist, extract info from them. If not, rely on web research.
 - Note image filenames for later use
 
 **From Web** (use MCP tools if available):
-- GitHub: repos, languages, contribution patterns, starred projects
-- LinkedIn: experience, skills, recommendations, education
-- Portfolio site: existing projects, writing style, design preferences
-- Search: blog posts, talks, mentions, side projects
+
+**Primary Research Sources**:
+1. **GitHub** (if username provided):
+   - Fetch repos, languages, contribution patterns, starred projects
+   - Read README files for major projects
+   - Check pinned repositories
+
+2. **Web Search** (ALWAYS use this - don't require direct links):
+   - Search: "[name] [location] software engineer" or relevant role
+   - Search: "[name] github" to find profile
+   - Search: "[name] linkedin" to find profile
+   - Search: "[name] projects" or "[name] developer"
+   - Look for: personal websites, blog posts, talks, interviews, mentions
+
+3. **LinkedIn** (ONLY if accessible - ERROR 999 means blocked):
+   - LinkedIn actively blocks scrapers with error 999
+   - If you get error 999, **skip LinkedIn entirely** - don't retry
+   - Instead, use web search: "[name] linkedin [company]" to find mentions
+   - Search for company press releases, blog posts mentioning the person
+   - Check Crunchbase, AngelList, company About pages
+
+4. **Portfolio/Personal Sites**:
+   - If found via search, scrape for projects, writing style, design preferences
+   - Check for blog posts, case studies, project write-ups
+
+**CRITICAL**: Direct LinkedIn/social links in profile.yaml are **OPTIONAL**. If not provided:
+- Use web search to find information
+- Gather from GitHub README, personal site, company pages
+- Build profile from publicly available information
+- It's better to have an incomplete but accurate profile than to fail setup
 
 **From Profile Config**:
 - Read the `notes` section carefully - this is the user's voice
@@ -81,10 +124,10 @@ If materials exist, extract info from them. If not, rely on web research.
 ### Research Depth Guidelines
 
 Based on `ai.research_depth` in profile.yaml:
-- **1-3**: GitHub + LinkedIn only, minimal search
-- **4-6**: Above + portfolio site + one round of web search
-- **7-8**: Deep search across multiple sources, find hidden gems
-- **9-10**: Exhaustive research, find everything they've ever published
+- **1-3**: GitHub only, minimal search (1-2 queries)
+- **4-6**: GitHub + web search + personal site (5-10 queries)
+- **7-8**: Deep search across multiple sources, find hidden gems (15-20 queries)
+- **9-10**: Exhaustive research, find everything they've ever published (30+ queries)
 
 ---
 
@@ -279,7 +322,7 @@ Before writing code, commit to a BOLD aesthetic direction based on the user's pr
    - 1: **Brutalist** - Sharp edges, monospace everywhere, high contrast, no shadows, grid breaks
    - 2: **Editorial** - Serif headers, asymmetric columns, magazine layouts, large pull quotes
    - 3: **Technical Terminal** - Monospace only, green/amber CRT vibes, ASCII art borders, command-line aesthetic
-   - 4: **Warm Minimal** - Cream/beige backgrounds, serif body text, generous spacing, soft shadows
+   - 4: **Retro Arcade** - Pixel fonts, neon colors, 8-bit graphics, scanline effects, bold shadows
    - 5: **Bold Geometric** - Sans-serif, primary color blocking, shapes as design elements, high contrast
    - 6: **Refined Luxury** - Elegant serifs, gold/silver accents, large whitespace, subtle animations
 
@@ -317,10 +360,10 @@ Before writing code, commit to a BOLD aesthetic direction based on the user's pr
 - Body: JetBrains Mono (monospace only)
 - Scale: 13px, 16px, 20px, 32px (terminal sizing)
 
-**Warm Minimal** (archetype 4):
-- Header: Fraunces, Newsreader, or Libre Baskerville
-- Body: Source Sans Pro, Public Sans, or Karla
-- Scale: 17px, 28px, 44px, 68px (organic flow)
+**Retro Arcade** (archetype 4):
+- Header: Press Start 2P, VT323, or Silkscreen
+- Body: Courier Prime, Inconsolata, or IBM Plex Mono
+- Scale: 12px, 18px, 28px, 48px (pixel-perfect)
 
 **Bold Geometric** (archetype 5):
 - Header: Outfit, Manrope, or DM Sans
@@ -355,10 +398,10 @@ Before writing code, commit to a BOLD aesthetic direction based on the user's pr
 - Palette B: Navy (#0a0e27), amber (#ffb000), dark amber bg (#1a0f00)
 - Palette C: Charcoal (#1a1d29), cyan (#00d9ff), dark cyan bg (#001a1f)
 
-**Warm Minimal** (archetype 4):
-- Palette A: Beige (#f7f4ef), mocha (#5c4a3a), terracotta (#d4745e)
-- Palette B: Ivory (#faf9f6), slate (#3d4849), sage (#9caf88)
-- Palette C: Cream (#f2ebe3), walnut (#5d4037), dusty pink (#d4a5a5)
+**Retro Arcade** (archetype 4):
+- Palette A: Deep purple (#1a0033), hot pink (#ff10f0), cyan (#00ffff)
+- Palette B: Black (#000000), neon green (#39ff14), magenta (#ff00ff)
+- Palette C: Dark blue (#0a0a2e), orange (#ff6600), yellow (#ffff00)
 
 **Bold Geometric** (archetype 5):
 - Palette A: White (#ffffff), black (#000000), electric blue (#0066ff)
@@ -413,12 +456,13 @@ Before writing code, commit to a BOLD aesthetic direction based on the user's pr
 - Prompt-style navigation (> commands)
 - Fixed header with system info
 
-**Warm Minimal** (archetype 4):
-- Generous vertical spacing (100-200px gaps)
-- Centered single column (max-width 800px)
-- Soft shadows and rounded corners (8-16px)
-- Floating cards on textured background
-- Minimal nav, lots of breathing room
+**Retro Arcade** (archetype 4):
+- Scanline effects and CRT glow
+- Chunky pixel borders (8px solid borders)
+- Neon text shadows and glow effects
+- Grid-based layout (multiples of 8px)
+- Arcade-style buttons with heavy box-shadow
+- Animated pixel art decorations
 
 **Bold Geometric** (archetype 5):
 - Color-blocked sections (alternating backgrounds)

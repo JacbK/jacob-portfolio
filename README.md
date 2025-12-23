@@ -42,9 +42,36 @@ The AI will:
 
 ## The Config File
 
-Edit `profile.yaml` before running setup. This is where you customize everything:
+You have two options for configuring your portfolio:
 
-### Design Sliders (1-10)
+### Option 1: Visual Config UI (Recommended)
+
+```bash
+npm install
+npm run dev
+# Visit http://localhost:3000/config
+```
+
+The visual config UI lets you:
+- **Fill out basic info** (name, email, social links)
+- **Adjust design sliders** visually with real-time previews
+- **Pick a visual style** by clicking on websites you like
+- **Download your profile.yaml** when done
+
+The AI will suggest an archetype based on the websites you select. Click 3-4 sites you admire, and it'll recommend the matching aesthetic.
+
+### Option 2: Edit YAML Directly
+
+Copy and edit the config template:
+
+```bash
+cp profile.example.yaml profile.yaml
+open profile.yaml  # or use your editor
+```
+
+**Most fields are optional!** Only `name` is required. The AI will research and fill in what's missing.
+
+#### Design Sliders (1-10)
 
 - **Creativity**: 1 = boring corporate, 10 = experimental artist
 - **Simplicity**: 1 = information overload, 10 = ultra minimal
@@ -286,6 +313,12 @@ Make sure filenames match:
 **"The content is still generic"**
 Increase `ai.copy_creativity` and `ai.quality_bar` in the config. Also fill out the `notes` section with specific details about yourself.
 
+**"LinkedIn research failed with error 999"**
+This is normal - LinkedIn blocks scrapers. The AI will automatically fall back to web search to find your information. Provide your LinkedIn URL in the config if you want it linked on your site, but the AI doesn't need direct access to build your portfolio.
+
+**"I want a specific design style, not random"**
+Use the visual config UI at `/config` (dev mode) to select websites you like, or set `design.archetype` to 1-6 in profile.yaml to force a specific aesthetic.
+
 ## How It Avoids Looking Like AI
 
 ### Design Diversity System
@@ -295,7 +328,7 @@ Increase `ai.copy_creativity` and `ai.quality_bar` in the config. Also fill out 
 1. **Brutalist** - Sharp edges, monospace fonts, high contrast, no shadows
 2. **Editorial** - Magazine layouts, serif headers, asymmetric columns
 3. **Technical Terminal** - Command-line aesthetic, monospace only, CRT colors
-4. **Warm Minimal** - Cream backgrounds, generous spacing, soft shadows
+4. **Retro Arcade** - Pixel fonts, neon colors, 8-bit graphics, scanline effects
 5. **Bold Geometric** - Color blocking, shapes, high contrast
 6. **Refined Luxury** - Elegant serifs, gold/silver accents, large whitespace
 
