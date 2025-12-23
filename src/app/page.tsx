@@ -3,13 +3,21 @@ import { BentoGrid } from '@/components/ui/BentoGrid';
 import { Terminal } from '@/components/ui/Terminal';
 import Experience from '@/components/ui/Experience';
 import { isUserDataPopulated, type UserProfile } from '@/data/schema';
-import userData from '@/data/user.json';
 import Link from 'next/link';
 import { Settings } from 'lucide-react';
 
+// Dynamically import user data - may not exist on first run
+let userData: Partial<UserProfile> = {};
+try {
+  userData = require('@/data/user.json');
+} catch {
+  // File doesn't exist yet - user hasn't run the AI generator
+  userData = {};
+}
+
 export default function Home() {
   // Check if user data is populated
-  const user = isUserDataPopulated(userData as Partial<UserProfile>)
+  const user = isUserDataPopulated(userData)
     ? (userData as UserProfile)
     : null;
 

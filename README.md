@@ -47,7 +47,7 @@ The setup script gives you two options:
 **Option 1: Visual UI** (recommended)
 - Opens browser at `localhost:3000/config`
 - Fill out form, pick visual style
-- Click "Save to Project" (auto-saves to profile.yaml)
+- Click green **"Save to Project"** button (auto-saves to profile.yaml - no manual copying!)
 - Or click "Download" to save manually
 - Simple, visual, guided
 
@@ -304,6 +304,9 @@ Persona works with multiple AI coding assistants:
 The setup script automatically launches the correct CLI tool based on your `profile.yaml` configuration.
 
 ## Troubleshooting
+
+**"Module not found: Can't resolve '@/data/user.json'"**
+This is normal on first startup! The file is created by the AI when it builds your portfolio. Just visit `/config` to set up your profile, or run the AI generator. The error will disappear once the file is created.
 
 **"AI keeps asking me questions"**
 Fill out `profile.yaml` more completely. The more you specify, the less it needs to ask.
