@@ -548,7 +548,10 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
               <h2 className="font-bold text-lg mb-2">Most fields are optional</h2>
               <p className="text-neutral-400 text-sm leading-relaxed">
                 Only your <span className="text-white font-medium">name</span> is required.
-                The AI will research and fill in everything else. Configure what you want to control directly.
+                The AI will research and fill in everything else.
+              </p>
+              <p className="text-neutral-500 text-sm mt-2">
+                Prefer code? Edit <code className="bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-300">profile.yaml</code> directly in your text editor.
               </p>
             </div>
           </div>
@@ -850,15 +853,38 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
         <div className="mt-12 bg-neutral-900 border border-neutral-800 rounded-lg p-8 text-center">
           <h3 className="text-xl font-bold mb-2">Ready to build?</h3>
           <p className="text-neutral-400 mb-6">
-            Download your config and run the setup script to generate your portfolio
+            Save your config and run the setup script to generate your portfolio
           </p>
           <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={async () => {
+                const yaml = generateYaml();
+                try {
+                  const res = await fetch('/api/save-config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ yaml })
+                  });
+                  if (res.ok) {
+                    alert('✓ Saved to profile.yaml');
+                  } else {
+                    alert('Failed to save. Try Download instead.');
+                  }
+                } catch {
+                  alert('Failed to save. Try Download instead.');
+                }
+              }}
+              className="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition-colors font-medium flex items-center gap-2"
+            >
+              <Download size={20} />
+              Save to Project
+            </button>
             <button
               onClick={downloadConfig}
               className="bg-white text-black px-6 py-3 rounded-md hover:bg-neutral-200 transition-colors font-medium flex items-center gap-2"
             >
               <Download size={20} />
-              Download profile.yaml
+              Download
             </button>
             <div className="text-neutral-600">→</div>
             <div className="text-sm text-neutral-400 font-mono">

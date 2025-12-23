@@ -55,7 +55,20 @@ You have two critical responsibilities:
    - 5 = Bold Geometric
    - 6 = Refined Luxury
 
-3. **Announce your choice** at the start: "I've randomly selected archetype [N]: [Name]"
+3. **ASK USER FOR CONFIRMATION** before proceeding:
+   ```
+   I've randomly selected archetype [N]: [Name]
+
+   This will give your portfolio a [brief description of archetype aesthetic].
+
+   Key changes I'll make:
+   - [Component changes]
+   - [Layout approach]
+   - [Typography style]
+
+   Proceed with this archetype? (yes/no)
+   If no, I can randomly select again or you can choose a specific number 1-6.
+   ```
 
 4. **Commit completely** - You will use ONLY the fonts, colors, and layout patterns from that archetype
 

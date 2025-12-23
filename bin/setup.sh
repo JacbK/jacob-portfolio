@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Persona: Unified Setup Script
+# Persona: Setup Script
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -41,76 +41,27 @@ fi
 # Step 2: Check for profile.yaml
 if [ ! -f "profile.yaml" ]; then
     echo ""
-    echo -e "${CYAN}[2/3]${NC} No profile.yaml found"
+    echo -e "${CYAN}[2/3]${NC} Opening config UI..."
     echo ""
-    echo -e "${YELLOW}Choose your setup method:${NC}"
+    echo -e "  ${CYAN}→${NC} Fill out your name (required)"
+    echo -e "  ${CYAN}→${NC} Pick design inspirations (optional)"
+    echo -e "  ${CYAN}→${NC} Click ${GREEN}'Save to Project'${NC} when done"
+    echo -e "  ${CYAN}→${NC} Then press Ctrl+C here to continue"
     echo ""
-    echo "  1) Visual Config UI (recommended)"
-    echo "     → Opens browser, fill out form, download config"
+
+    # Start dev server
+    npm run dev
+
+    # After they stop the server
     echo ""
-    echo "  2) Manual YAML editing"
-    echo "     → Opens template in editor"
-    echo ""
-    read -p "Enter choice (1 or 2): " choice
-
-    if [ "$choice" = "1" ]; then
-        echo ""
-        echo -e "${GREEN}Starting config UI...${NC}"
-        echo -e "  ${CYAN}→${NC} Opening http://localhost:3000/config"
-        echo ""
-        echo "  Steps:"
-        echo "    1. Fill out your name (required)"
-        echo "    2. Pick a visual style"
-        echo "    3. Adjust sliders (optional)"
-        echo "    4. Click 'Download' button"
-        echo "    5. Save as 'profile.yaml' in this folder"
-        echo "    6. Press Ctrl+C here when done"
-        echo ""
-
-        # Start dev server and wait
-        npm run dev
-
-        # After they stop the server
-        echo ""
-        if [ ! -f "profile.yaml" ]; then
-            echo -e "${YELLOW}Waiting for profile.yaml...${NC}"
-            echo "  ${CYAN}→${NC} Check your Downloads folder"
-            echo "  ${CYAN}→${NC} Move profile.yaml to: $PROJECT_DIR"
-            echo ""
-            read -p "Press Enter when profile.yaml is ready..."
-        fi
-    else
-        echo ""
-        cp profile.example.yaml profile.yaml
-        echo -e "${GREEN}✓ Created profile.yaml${NC}"
-        echo ""
-        echo -e "${YELLOW}Opening in editor...${NC}"
-        echo "  ${CYAN}→${NC} Edit your name (required)"
-        echo "  ${CYAN}→${NC} Everything else is optional"
-        echo ""
-
-        # Try to open in best available editor
-        if command -v code &> /dev/null; then
-            code profile.yaml
-        elif command -v nano &> /dev/null; then
-            nano profile.yaml
-        else
-            open profile.yaml 2>/dev/null || xdg-open profile.yaml 2>/dev/null
-        fi
-
-        read -p "Press Enter when done editing..."
+    if [ ! -f "profile.yaml" ]; then
+        echo -e "${YELLOW}No profile.yaml found.${NC}"
+        echo "  Run ./bin/setup.sh again after saving your config."
+        exit 1
     fi
 else
     echo ""
     echo -e "${CYAN}[2/3]${NC} Found profile.yaml ✓"
-fi
-
-# Verify profile.yaml exists
-if [ ! -f "profile.yaml" ]; then
-    echo ""
-    echo -e "${YELLOW}Error: profile.yaml not found${NC}"
-    echo "  Please create it and run ./bin/setup.sh again"
-    exit 1
 fi
 
 # Step 3: Detect CLI tool and launch
@@ -121,7 +72,7 @@ echo ""
 # Read CLI preference from profile.yaml
 CLI_TOOL="claude-code"
 if [ -f "profile.yaml" ]; then
-    CLI_FROM_FILE=$(grep "^cli:" profile.yaml | sed 's/cli: *"\?\([^"]*\)"\?/\1/' | tr -d ' ')
+    CLI_FROM_FILE=$(grep "^cli:" profile.yaml | sed 's/cli: *"\([^"]*\)".*/\1/' | tr -d ' ')
     if [ ! -z "$CLI_FROM_FILE" ]; then
         CLI_TOOL="$CLI_FROM_FILE"
     fi
