@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, Download, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 const ARCHETYPE_EXAMPLES = [
   {
@@ -296,6 +295,7 @@ export default function ConfigPage() {
     email: '',
     github: '',
     linkedin: '',
+    cli: 'claude-code',
     design: {
       creativity: 5,
       simplicity: 7,
@@ -410,7 +410,7 @@ export default function ConfigPage() {
     };
   };
 
-  const downloadConfig = () => {
+  const generateYaml = () => {
     // Build design inspirations section with embedded design specs AND parsed attributes
     const inspirationsText = selectedExamples.length > 0
       ? `\ndesign_inspirations:${selectedExamples.map(url => {
@@ -447,10 +447,11 @@ export default function ConfigPage() {
         }).join('')}`
       : '';
 
-    const yaml = `name: "${config.name || 'Your Name'}"
+    return `name: "${config.name || 'Your Name'}"
 email: "${config.email}"
 github: "${config.github}"
 linkedin: "${config.linkedin}"
+cli: "${config.cli}"  # AI tool: claude-code, codex, gemini, aider, cursor, other
 
 design:
   creativity: ${config.design.creativity}
@@ -473,7 +474,10 @@ ai:
 notes: |
 ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
 `;
+  };
 
+  const downloadConfig = () => {
+    const yaml = generateYaml();
     const blob = new Blob([yaml], { type: 'text/yaml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -500,13 +504,38 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
             <span className="text-sm font-medium">Back</span>
           </Link>
           <h1 className="text-xl font-bold">Portfolio Config</h1>
-          <button
-            onClick={downloadConfig}
-            className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md hover:bg-neutral-200 transition-colors text-sm font-medium"
-          >
-            <Download size={16} />
-            Download
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={async () => {
+                const yaml = generateYaml();
+                try {
+                  const res = await fetch('/api/save-config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ yaml })
+                  });
+                  if (res.ok) {
+                    alert('✓ Saved to profile.yaml');
+                  } else {
+                    alert('Failed to save. Try Download instead.');
+                  }
+                } catch {
+                  alert('Failed to save. Try Download instead.');
+                }
+              }}
+              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+            >
+              <Download size={16} />
+              Save to Project
+            </button>
+            <button
+              onClick={downloadConfig}
+              className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md hover:bg-neutral-200 transition-colors text-sm font-medium"
+            >
+              <Download size={16} />
+              Download
+            </button>
+          </div>
         </div>
       </header>
 
@@ -580,6 +609,24 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
                     className="w-full bg-neutral-900 border border-neutral-800 rounded-md px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
                     placeholder="username"
                   />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    AI CLI Tool <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={config.cli}
+                    onChange={(e) => setConfig({ ...config, cli: e.target.value })}
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-md px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+                  >
+                    <option value="claude-code">Claude Code</option>
+                    <option value="codex">GitHub Codex</option>
+                    <option value="gemini">Google Gemini CLI</option>
+                    <option value="aider">Aider</option>
+                    <option value="cursor">Cursor AI</option>
+                    <option value="other">Other / Custom</option>
+                  </select>
+                  <p className="text-xs text-neutral-500 mt-1.5">Which AI coding assistant will build your portfolio?</p>
                 </div>
               </div>
             </div>
@@ -682,6 +729,7 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
                             : 'border-neutral-800 hover:border-neutral-600'
                         }`}
                       >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={example.screenshot}
                           alt={example.name}
@@ -693,7 +741,9 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
                             target.style.display = 'none';
                             const parent = target.parentElement;
                             if (parent) {
-                              parent.classList.add(`bg-gradient-to-br`, archetype.color);
+                              parent.classList.add('bg-gradient-to-br');
+                              // Add each class from archetype.color separately
+                              archetype.color.split(' ').forEach(cls => parent.classList.add(cls));
                             }
                           }}
                         />

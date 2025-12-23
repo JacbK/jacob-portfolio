@@ -17,25 +17,39 @@ mkdir -p "$HOME/.claude"
 SETTINGS_FILE="$HOME/.claude/settings.json"
 
 if [ -f "$SETTINGS_FILE" ]; then
-    echo -e "${YELLOW}Existing settings found at:${NC}"
-    echo "  $SETTINGS_FILE"
-    echo ""
-    echo "Current contents:"
-    cat "$SETTINGS_FILE"
-    echo ""
-    read -p "Overwrite? (y/n): " overwrite
-    if [ "$overwrite" != "y" ]; then
-        echo "Cancelled"
+    echo -e "${YELLOW}Existing settings found. Merging...${NC}"
+
+    # Check if autoApproveTools already exists
+    if grep -q "autoApproveTools" "$SETTINGS_FILE"; then
+        echo -e "${GREEN}✓ autoApproveTools already configured${NC}"
         exit 0
     fi
-fi
 
-# Write settings
-cat > "$SETTINGS_FILE" << 'EOF'
+    # Backup existing file
+    cp "$SETTINGS_FILE" "$SETTINGS_FILE.backup"
+
+    # Merge with existing settings using jq if available, otherwise manual merge
+    if command -v jq &> /dev/null; then
+        jq '. + {"autoApproveTools": ["web_fetch", "web_search"]}' "$SETTINGS_FILE.backup" > "$SETTINGS_FILE"
+    else
+        # Manual merge: inject autoApproveTools with proper comma handling
+        # Remove the last closing brace
+        sed '$ d' "$SETTINGS_FILE.backup" > "$SETTINGS_FILE"
+        # Add comma to last line if it doesn't have one and isn't just opening brace
+        if tail -1 "$SETTINGS_FILE" | grep -v "^{" | grep -qv ",$"; then
+            sed -i.bak '$ s/$/,/' "$SETTINGS_FILE" && rm -f "$SETTINGS_FILE.bak"
+        fi
+        echo '  "autoApproveTools": ["web_fetch", "web_search"]' >> "$SETTINGS_FILE"
+        echo '}' >> "$SETTINGS_FILE"
+    fi
+else
+    # Create new file
+    cat > "$SETTINGS_FILE" << 'EOF'
 {
   "autoApproveTools": ["web_fetch", "web_search"]
 }
 EOF
+fi
 
 echo -e "${GREEN}✓ Created: $SETTINGS_FILE${NC}"
 echo ""

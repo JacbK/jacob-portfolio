@@ -113,10 +113,20 @@ if [ ! -f "profile.yaml" ]; then
     exit 1
 fi
 
-# Step 3: Launch AI
+# Step 3: Detect CLI tool and launch
 echo ""
 echo -e "${CYAN}[3/3]${NC} Launching AI generator..."
 echo ""
+
+# Read CLI preference from profile.yaml
+CLI_TOOL="claude-code"
+if [ -f "profile.yaml" ]; then
+    CLI_FROM_FILE=$(grep "^cli:" profile.yaml | sed 's/cli: *"\?\([^"]*\)"\?/\1/' | tr -d ' ')
+    if [ ! -z "$CLI_FROM_FILE" ]; then
+        CLI_TOOL="$CLI_FROM_FILE"
+    fi
+fi
+
 echo -e "${GREEN}The AI will now:${NC}"
 echo "  • Research you online (GitHub, web search)"
 echo "  • Generate your content & design"
@@ -124,25 +134,75 @@ echo "  • Self-grade and iterate"
 echo "  • Build your portfolio"
 echo ""
 
-# Check if we should auto-approve web fetches
-if [ ! -f "$HOME/.claude/settings.json" ]; then
-    echo -e "${YELLOW}Tip:${NC} To stop Claude from asking permission for each website:"
-    echo ""
-    echo "  Create: ~/.claude/settings.json"
-    echo "  Add: {\"autoApproveTools\": [\"web_fetch\", \"web_search\"]}"
-    echo ""
-    echo "Press Enter to continue..."
-    read -r
-fi
-
-# Launch Claude Code in the project directory
+# Launch the appropriate CLI
 cd "$PROJECT_DIR"
 
-echo ""
-echo -e "${CYAN}Starting Claude Code...${NC}"
-echo ""
-echo -e "When Claude starts, say:"
-echo -e "  ${GREEN}\"Read .agent/instructions.md and build my portfolio\"${NC}"
-echo ""
+case "$CLI_TOOL" in
+    "claude-code")
+        # Auto-configure Claude settings
+        if [ ! -f "$HOME/.claude/settings.json" ] || ! grep -q "autoApproveTools" "$HOME/.claude/settings.json" 2>/dev/null; then
+            echo -e "${CYAN}Configuring Claude auto-approval...${NC}"
+            "$SCRIPT_DIR/configure-claude.sh"
+            echo ""
+        fi
 
-exec claude
+        echo ""
+        echo -e "${CYAN}Starting Claude Code...${NC}"
+        echo ""
+        echo -e "When Claude starts, say:"
+        echo -e "  ${GREEN}\"Read .agent/instructions.md and build my portfolio\"${NC}"
+        echo ""
+        exec claude
+        ;;
+
+    "codex")
+        echo -e "${CYAN}Starting GitHub Codex...${NC}"
+        echo ""
+        echo -e "When Codex starts, say:"
+        echo -e "  ${GREEN}\"Read .agent/instructions.md and build my portfolio\"${NC}"
+        echo ""
+        exec codex
+        ;;
+
+    "gemini")
+        echo -e "${CYAN}Starting Google Gemini CLI...${NC}"
+        echo ""
+        echo -e "When Gemini starts, say:"
+        echo -e "  ${GREEN}\"Read .agent/instructions.md and build my portfolio\"${NC}"
+        echo ""
+        exec gemini
+        ;;
+
+    "aider")
+        echo -e "${CYAN}Starting Aider...${NC}"
+        echo ""
+        exec aider --read .agent/instructions.md
+        ;;
+
+    "cursor")
+        echo -e "${CYAN}Opening Cursor AI...${NC}"
+        echo ""
+        echo -e "${YELLOW}Note:${NC} Cursor doesn't have a CLI mode."
+        echo "  1. Open this project in Cursor"
+        echo "  2. Read .agent/instructions.md"
+        echo "  3. Say: 'Build my portfolio following these instructions'"
+        echo ""
+        if command -v cursor &> /dev/null; then
+            cursor "$PROJECT_DIR"
+        else
+            echo "Cursor not found. Please open the project manually."
+        fi
+        ;;
+
+    "other"|*)
+        echo -e "${YELLOW}Custom CLI selected${NC}"
+        echo ""
+        echo "To use your AI tool:"
+        echo "  1. Launch your preferred AI coding assistant"
+        echo "  2. Open this project directory"
+        echo "  3. Say: 'Read .agent/instructions.md and build my portfolio'"
+        echo ""
+        echo "Press Enter to exit..."
+        read -r
+        ;;
+esac

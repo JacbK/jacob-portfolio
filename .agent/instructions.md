@@ -10,6 +10,38 @@ You have two critical responsibilities:
 1. Build a portfolio that accurately represents the user
 2. **Grade your own work** and iterate until it meets a high bar
 
+---
+
+## ❌ EXAMPLE: What NOT to Do
+
+**User's complaint**: "You made a website very similar to other deployments of this project."
+
+**What you probably did wrong**:
+```diff
+- Changed accent color from #5e6ad2 to #7c3aed
+- Updated text content with user's name
+- Defined fonts in layout.tsx but never applied them
+- Kept BentoGrid, Terminal, Hero components identical
+- Same 3-section layout structure
+- Self-graded 7/10 for "changing colors"
+```
+
+**This is LAZY and UNACCEPTABLE.** Changing hex codes is not design work.
+
+**What you SHOULD have done**:
+```diff
++ Randomly selected archetype 4 (Retro Arcade)
++ Deleted BentoGrid.tsx and Terminal.tsx
++ Created PixelCard.tsx with 8px borders and neon colors
++ Replaced 3-col grid with 2-col game UI layout
++ Applied Press Start 2P font to ALL headings
++ Changed section order to: Score Display → Projects Grid → XP Timeline
++ Used neon cyan/magenta/yellow color scheme throughout
++ Self-graded 3/10 initially, iterated 3 times to reach 8/10
+```
+
+**Remember**: If your changes could be done with find-and-replace, you failed.
+
 ## 🎲 MANDATORY FIRST STEP: Randomize Design Direction
 
 **BEFORE reading profile.yaml, BEFORE researching the user, you MUST:**
@@ -28,6 +60,61 @@ You have two critical responsibilities:
 4. **Commit completely** - You will use ONLY the fonts, colors, and layout patterns from that archetype
 
 **This is non-negotiable.** If you skip this step or blend archetypes, you auto-fail the design coherence grading.
+
+---
+
+## ⚠️ HARD REQUIREMENTS - Auto-Fail if Violated
+
+These are **non-negotiable**. Violating ANY of these means you must start over:
+
+### 1. Component Diversity
+- **MUST DELETE** at least 2 existing component files from `src/components/ui/` and replace with new components
+- **MUST NOT** keep the default BentoGrid if archetype is Editorial, Terminal, or Luxury (use galleries, timelines, or lists instead)
+- **MUST NOT** keep the Terminal component if archetype is not Technical Terminal (replace with quote block, CTA section, or skills showcase)
+
+### 2. Layout Originality
+- **MUST NOT** use the default section order (Hero → Projects → Experience → Terminal)
+- **MUST** create a unique layout structure based on archetype:
+  - **Brutalist**: Single column, harsh dividers, no cards
+  - **Editorial**: Multi-column asymmetric, pull quotes, image-first
+  - **Technical Terminal**: Full-width code blocks, monospace everywhere, CLI aesthetic
+  - **Retro Arcade**: Pixel borders, game-like sections, score/stats displays
+  - **Bold Geometric**: Overlapping shapes, diagonal layouts, color blocks
+  - **Refined Luxury**: Vertical scroll story, massive images, minimal text
+
+### 3. Typography Application
+- **MUST** actually apply your chosen fonts to elements (not just define CSS variables)
+- **MUST** use different font weights for hierarchy (not all 400 or 500)
+- **MUST** vary font sizes by at least 3 distinct scales (not all 16px with slight variations)
+
+### 4. Color Application
+- Changing `colorAccent` from `#5e6ad2` to `#7c3aed` **DOES NOT COUNT** as design customization
+- **MUST** apply archetype colors to backgrounds, borders, and interactive elements
+- **MUST NOT** have >80% black/white if archetype demands color (Arcade, Geometric)
+
+### 5. Structural Changes
+- "Editing existing files" does not mean changing `className` values
+- **MUST** modify component structure: change wrapper elements, grid systems, or layout patterns
+- Example: BentoGrid with 3 columns → Editorial with asymmetric 2-column + sidebar
+
+---
+
+## 🚫 Forbidden Shortcuts
+
+These actions will **auto-fail** your design grading:
+
+❌ Keeping identical component structure and just changing colors
+❌ Defining fonts in `layout.tsx` but never using them in components
+❌ Using the same 3-section layout (Hero, Projects, About) for all archetypes
+❌ Changing only accent colors and calling it "archetype compliance"
+❌ Self-grading above 5/10 without structural changes
+❌ Using generic section titles like "Projects" or "Experience" (make them archetype-specific)
+
+✅ **What counts as real design work:**
+- Writing a new `<PixelCard>` component with 8-bit borders for Retro Arcade
+- Replacing BentoGrid with `<EditorialLayout>` that has 70/30 asymmetric columns
+- Deleting Hero entirely and starting with a full-screen image + minimal text overlay
+- Using actual layout changes: `grid-template-columns: 2fr 1fr` instead of `grid-cols-3`
 
 ---
 
@@ -60,13 +147,14 @@ Read `profile.yaml` in the project root. This file contains:
 **Archetype Selection**:
 - If `design.archetype` is 1-6, use that archetype
 - If 0 or missing, randomly select
-- **If `design_inspirations` is provided**, use those websites as design reference instead of strictly following an archetype
+- **Design inspirations supplement the archetype, they do NOT replace it**
 
 **Design Inspirations**: If the user provided a `design_inspirations` list:
 - Each inspiration includes an `attributes` object with **pre-parsed numeric values**
-- **Use these directly** - no manual parsing or interpretation needed
-- Follow the programmatic merging algorithm in Phase 3
-- The goal is to create something inspired by their taste, not a clone
+- **Use these as refinements** to your archetype's base aesthetic
+- Follow the programmatic merging algorithm in Phase 3 for colors/fonts/spacing
+- **BUT**: Layout, structure, and components MUST still follow the archetype rules
+- Example: "Bold Geometric + Linear inspiration" = geometric shapes with Linear's clean fonts and spacing, NOT just Linear's design
 
 Example from profile.yaml:
 ```yaml
@@ -446,6 +534,60 @@ function blendHexColors(hexArray) {
 }
 ```
 
+### Archetype Implementation Guide
+
+**Critical changes required for each archetype:**
+
+| Archetype | Delete | Create | Layout | Typography | Key Pattern |
+|-----------|--------|--------|--------|------------|-------------|
+| **Brutalist** | BentoGrid, Terminal | `<BrutalistSection>` | Single column, harsh `border-4` dividers | Bold sans 800+ or system mono | `<ul>` lists with `border-l-4`, NO cards |
+| **Editorial** | BentoGrid, Terminal | `<EditorialLayout>`, `<PullQuote>` | Asymmetric `grid-cols-[2fr_1fr]`, sidebars | Serif headers 48-80px, sans body | Image-first, text overlays, pull quotes |
+| **Terminal** | Hero, BentoGrid | `<TerminalWindow>`, `<CodeBlock>` | Full-width code blocks, CLI prompt | Monospace only (JetBrains, Fira) | `bg-black text-green-400`, CRT aesthetic |
+| **Retro Arcade** | All modern components | `<PixelCard>`, `<ScoreDisplay>` | `border-8`, chunky grid, game UI | Pixel fonts (Press Start 2P) | Neon cyan/magenta/yellow on dark, SCORE/LEVEL displays |
+| **Geometric** | BentoGrid | `<ColorBlock>`, `<DiagonalSection>` | Overlapping with z-index, `-rotate-3`, diagonal | Bold sans 700-900 weight | Color blocks `bg-blue-600`, overlapping absolute positioning |
+| **Luxury** | BentoGrid, Terminal | `<HeroImage>`, `<MinimalText>` | Vertical scroll, `h-screen` sections, 200px gaps | Light serif 300 weight, tracking-wide | Cream/beige bg, full-viewport images, extreme whitespace |
+
+**Example code snippets** (use these patterns):
+
+```tsx
+// Brutalist: border-b-4 border-black sections
+<section className="border-b-4 border-black p-8">
+  <ul>{projects.map(p => <li className="border-l-4 border-black pl-4">{p.title}</li>)}</ul>
+</section>
+
+// Editorial: asymmetric 70/30 with sidebar
+<div className="grid grid-cols-[2fr_1fr]">
+  <article><img /><h2 className="font-serif text-6xl">{title}</h2></article>
+  <aside className="border-l-2 pl-8"><PullQuote /></aside>
+</div>
+
+// Terminal: CLI prompt aesthetic
+<div className="bg-black text-green-400 font-mono">
+  <div className="p-4 border-b border-green-400">
+    <span>user@portfolio:~$</span> cat about.txt
+  </div>
+</div>
+
+// Arcade: chunky borders + score display
+<div className="border-8 border-cyan-500 bg-purple-900">
+  <div className="font-['Press_Start_2P']">SCORE: {count}</div>
+</div>
+
+// Geometric: overlapping rotated shapes
+<div className="relative">
+  <div className="absolute w-2/3 h-96 bg-blue-600 -rotate-3" />
+  <div className="relative z-10 bg-yellow-400"><h1 className="text-8xl font-black" /></div>
+</div>
+
+// Luxury: full-screen sections, extreme spacing
+<section className="h-screen flex items-center">
+  <h1 className="font-serif font-light text-7xl tracking-wider" />
+</section>
+<section className="py-64"><img className="h-[70vh]" /></section>
+```
+
+---
+
 ### Interpreting Design Preferences
 
 You need to modify the **UI components** based on the sliders in `profile.yaml`:
@@ -798,15 +940,34 @@ Score each category 1-10. Your overall score is the average.
 - Do the projects sound unique or generic?
 
 **2. Design Coherence** (Does the design match the preferences AND avoid AI aesthetics?)
-- **CRITICAL CHECKLIST** (auto-fail if any are violated):
-  - ✅ Did you randomly select an archetype (1-6)? Document in user.json
-  - ✅ Are you using the EXACT fonts from that archetype's pairing?
-  - ✅ Are you using ONE of the 3 color palettes from that archetype?
-  - ✅ Is the layout matching the archetype's principles? (Brutalist = sharp edges, Editorial = asymmetric, etc.)
-- Does the creativity level match the slider?
-- Is the personality (playful vs serious) correct?
-- Does the typography feel distinctive and intentional?
-- Are the backgrounds atmospheric (not solid colors)?
+
+**CRITICAL CHECKLIST** - Answer YES/NO to each. If ANY are NO, **auto-fail** and start over:
+
+✅ **Component Deletion**: Did you DELETE at least 2 existing components and replace them?
+  - YES: Deleted BentoGrid.tsx and Terminal.tsx, created EditorialGallery.tsx and PullQuote.tsx
+  - NO: Kept all existing components → **FAIL**
+
+✅ **Layout Change**: Is the section order different from Hero → Projects → Experience → Terminal?
+  - YES: New order is Image Hero → Editorial Grid → Experience Timeline → Quote
+  - NO: Same order, just changed colors → **FAIL**
+
+✅ **Typography Application**: Are your chosen fonts actually used in components (not just defined)?
+  - YES: `<h1 className="font-serif">` applied throughout, 3 weight variations used
+  - NO: Defined fonts but kept default Inter everywhere → **FAIL**
+
+✅ **Structural Changes**: Did you modify component structure (grid layouts, wrapper elements)?
+  - YES: Changed 3-col grid to asymmetric 2-col with sidebar
+  - NO: Same grid, just changed gap from `gap-4` to `gap-6` → **FAIL**
+
+✅ **Archetype Compliance**: Does your layout match archetype principles?
+  - Brutalist: Single column, NO cards, harsh dividers
+  - Editorial: Asymmetric multi-column, pull quotes, image-first
+  - Terminal: Full-width code blocks, monospace everywhere
+  - Retro: Pixel borders, game UI, stats display
+  - Geometric: Overlapping shapes, diagonals, color blocks
+  - Luxury: Vertical scroll story, huge images, minimal text
+
+If you answered NO to ANY of these, your Design Coherence score is **0/10** regardless of other factors.
 
 **3. Content Quality** (Is the writing compelling?)
 - Would you click on these projects?

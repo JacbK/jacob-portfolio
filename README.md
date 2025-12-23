@@ -46,7 +46,9 @@ The setup script gives you two options:
 
 **Option 1: Visual UI** (recommended)
 - Opens browser at `localhost:3000/config`
-- Fill out form, pick visual style, download config
+- Fill out form, pick visual style
+- Click "Save to Project" (auto-saves to profile.yaml)
+- Or click "Download" to save manually
 - Simple, visual, guided
 
 **Option 2: YAML Editor**
@@ -58,6 +60,7 @@ The setup script gives you two options:
 
 **Required:**
 - Your name
+- AI CLI tool (Claude Code, Codex, Gemini, Aider, Cursor, or Other)
 
 **Optional** (AI will research if missing):
 - Email, GitHub, LinkedIn
@@ -287,6 +290,19 @@ vercel
 # Or use Netlify, Railway, Render, etc.
 ```
 
+## AI CLI Tool Support
+
+Persona works with multiple AI coding assistants:
+
+- **Claude Code** (recommended) - Full support, auto-configured
+- **GitHub Codex** - Full support
+- **Google Gemini CLI** - Full support
+- **Aider** - Auto-passes instructions via `--read` flag
+- **Cursor AI** - Manual mode (opens project, you paste instructions)
+- **Other** - Manual instructions provided
+
+The setup script automatically launches the correct CLI tool based on your `profile.yaml` configuration.
+
 ## Troubleshooting
 
 **"AI keeps asking me questions"**
@@ -314,11 +330,11 @@ This is normal - LinkedIn blocks scrapers. The AI will automatically fall back t
 Use the visual config UI at `/config` (dev mode) to select websites you like, or set `design.archetype` to 1-6 in profile.yaml to force a specific aesthetic.
 
 **"Claude keeps asking permission to visit websites"**
-Run this once to auto-approve web searches:
+The setup script now automatically configures this for you! But if you need to run it manually:
 ```bash
 ./bin/configure-claude.sh
 ```
-This creates `~/.claude/settings.json` with auto-approval for web tools.
+This updates `~/.claude/settings.json` to auto-approve web tools while preserving your existing settings.
 
 ## How It Avoids Looking Like AI
 
