@@ -1,4 +1,4 @@
-# Site-in-a-Box: Profile Configuration
+# Persona: Profile Configuration
 # Most fields are OPTIONAL - the AI will research and fill in what's missing
 # Only provide what you want to control directly
 
@@ -28,6 +28,21 @@ design:
   animation: 5       # 1-10: How much motion? (default: 5)
   color_intensity: 4 # 1-10: How vibrant? (default: 4)
   archetype: 0       # 0 = random, 1-6 = force specific archetype (default: 0 random)
+
+# Optional: Design inspirations from websites you like
+# Use the visual config UI at /config to select sites and download with pre-parsed attributes
+# The AI will blend these attributes programmatically (no manual interpretation)
+# design_inspirations:
+#   - name: "Linear"
+#     attributes:
+#       fontFamily: "Inter"
+#       fontSize: 15
+#       fontWeight: 500
+#       colorBg: "#000000"
+#       colorAccent: "#5e6ad2"
+#       maxWidth: 1200
+#       sectionSpacing: 100
+#       # ... (see /config for full structure)
 
 # ========================================
 # OPTIONAL: Content Preferences

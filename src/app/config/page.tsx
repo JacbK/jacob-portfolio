@@ -12,9 +12,45 @@ const ARCHETYPE_EXAMPLES = [
     description: 'Sharp edges, monospace, high contrast',
     color: 'from-neutral-900 to-neutral-800',
     examples: [
-      { name: 'Brutalist Web Design', url: 'https://brutalist-web.design', screenshot: 'https://api.microlink.io/?url=https://brutalist-web.design&screenshot=true&embed=screenshot.url' },
-      { name: 'Neobrutalism', url: 'https://neobrutalism.dev', screenshot: 'https://api.microlink.io/?url=https://neobrutalism.dev&screenshot=true&embed=screenshot.url' },
-      { name: 'Mono Company', url: 'https://mono.company', screenshot: 'https://api.microlink.io/?url=https://mono.company&screenshot=true&embed=screenshot.url' },
+      {
+        name: 'Brutalist Web Design',
+        url: 'https://brutalist-web.design',
+        screenshot: 'https://api.microlink.io/?url=https://brutalist-web.design&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'System monospace, no custom fonts, 16px base',
+          colors: 'Pure black/white, no grays, high contrast',
+          layout: 'Single column, left-aligned, no grid, HTML default flow',
+          spacing: 'Minimal padding, browser defaults, dense',
+          motion: 'None - completely static',
+          details: 'No shadows, underlined links, raw HTML aesthetic'
+        }
+      },
+      {
+        name: 'Neobrutalism',
+        url: 'https://neobrutalism.dev',
+        screenshot: 'https://api.microlink.io/?url=https://neobrutalism.dev&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Bold sans-serif headers (800+ weight), monospace body',
+          colors: 'Black backgrounds, white text, neon accent (yellow/cyan)',
+          layout: 'Boxy cards, thick borders (4-8px), no border-radius',
+          spacing: 'Generous padding (24-48px), clear sections',
+          motion: 'Sharp snap animations, no easing curves',
+          details: 'Heavy drop shadows (8-12px), stark borders, grid-based'
+        }
+      },
+      {
+        name: 'Mono Company',
+        url: 'https://mono.company',
+        screenshot: 'https://api.microlink.io/?url=https://mono.company&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Monospace everywhere (IBM Plex Mono), 14-16px',
+          colors: 'True monochrome (black/white/grays), no color',
+          layout: 'Fixed-width (1200px max), centered, strict grid',
+          spacing: 'Consistent 8px grid, mathematical spacing',
+          motion: 'Minimal hover states, fade transitions only',
+          details: 'Thin borders (1px), subtle shadows, pixel-perfect alignment'
+        }
+      },
     ],
   },
   {
@@ -23,9 +59,45 @@ const ARCHETYPE_EXAMPLES = [
     description: 'Magazine layouts, serif headers',
     color: 'from-amber-900 to-amber-800',
     examples: [
-      { name: 'NY Times', url: 'https://www.nytimes.com', screenshot: 'https://api.microlink.io/?url=https://www.nytimes.com&screenshot=true&embed=screenshot.url' },
-      { name: 'The Pudding', url: 'https://pudding.cool', screenshot: 'https://api.microlink.io/?url=https://pudding.cool&screenshot=true&embed=screenshot.url' },
-      { name: 'The Verge', url: 'https://www.theverge.com', screenshot: 'https://api.microlink.io/?url=https://www.theverge.com&screenshot=true&embed=screenshot.url' },
+      {
+        name: 'NY Times',
+        url: 'https://www.nytimes.com',
+        screenshot: 'https://api.microlink.io/?url=https://www.nytimes.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Georgia/Serif headers (28-48px), Sans body (16-18px)',
+          colors: 'Black text, white bg, minimal red accents',
+          layout: 'Multi-column grid, asymmetric breakup, sidebars',
+          spacing: 'Tight line-height (1.4), dense paragraph spacing',
+          motion: 'None - static content focus',
+          details: 'Thin divider lines (1px), occasional images, text-heavy'
+        }
+      },
+      {
+        name: 'The Pudding',
+        url: 'https://pudding.cool',
+        screenshot: 'https://api.microlink.io/?url=https://pudding.cool&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Bold serif headlines (60-80px), sans body (18-21px)',
+          colors: 'Vibrant accent colors, white/cream backgrounds',
+          layout: 'Asymmetric columns (70/30 split), overlapping elements',
+          spacing: 'Generous (100-200px section gaps), breathable',
+          motion: 'Scroll-triggered animations, data visualizations',
+          details: 'Large pull quotes, colored text blocks, image/text overlap'
+        }
+      },
+      {
+        name: 'The Verge',
+        url: 'https://www.theverge.com',
+        screenshot: 'https://api.microlink.io/?url=https://www.theverge.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: '__Optimist/serif headlines (32-56px), sans body (17px)',
+          colors: 'Black/white base, neon accent (hot pink/lime)',
+          layout: 'Card-based grid, featured hero, sidebar modules',
+          spacing: 'Moderate (40-60px gaps), card padding (24px)',
+          motion: 'Smooth image lazy-loads, hover scale effects',
+          details: 'Rounded cards (8px), soft shadows, category tags'
+        }
+      },
     ],
   },
   {
@@ -34,9 +106,45 @@ const ARCHETYPE_EXAMPLES = [
     description: 'Command-line aesthetic, CRT colors',
     color: 'from-green-900 to-green-800',
     examples: [
-      { name: 'Terminal Sexy', url: 'https://terminal.sexy', screenshot: 'https://api.microlink.io/?url=https://terminal.sexy&screenshot=true&embed=screenshot.url' },
-      { name: 'Robin Sloan', url: 'https://www.robinsloan.com', screenshot: 'https://api.microlink.io/?url=https://www.robinsloan.com&screenshot=true&embed=screenshot.url' },
-      { name: 'GitHub', url: 'https://github.com', screenshot: 'https://api.microlink.io/?url=https://github.com&screenshot=true&embed=screenshot.url' },
+      {
+        name: 'Terminal Sexy',
+        url: 'https://terminal.sexy',
+        screenshot: 'https://api.microlink.io/?url=https://terminal.sexy&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Monospace (Fira Code/JetBrains), 14px fixed',
+          colors: 'Dark bg (#0d0d0d), green text (#00ff41), cursor blink',
+          layout: 'Fixed-width (80ch), single column, text-only',
+          spacing: 'Line-height 1.5, no padding, terminal default',
+          motion: 'Blinking cursor, typewriter effect on load',
+          details: 'ASCII borders, prompt symbols (>), CRT scanlines'
+        }
+      },
+      {
+        name: 'Robin Sloan',
+        url: 'https://www.robinsloan.com',
+        screenshot: 'https://api.microlink.io/?url=https://www.robinsloan.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Monospace (Courier/Consolas), 16px, serif fallback',
+          colors: 'Black bg, white text, no colors',
+          layout: 'Narrow column (60ch), left-aligned, essay format',
+          spacing: 'Generous line-height (1.8), wide margins',
+          motion: 'None - reading-focused',
+          details: 'Underlined links, minimal decoration, text-first'
+        }
+      },
+      {
+        name: 'GitHub',
+        url: 'https://github.com',
+        screenshot: 'https://api.microlink.io/?url=https://github.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Monospace code (SF Mono), sans UI (14px)',
+          colors: 'Dark mode (#0d1117), white text, blue accents',
+          layout: 'File tree sidebar, content main, 3-column',
+          spacing: 'Compact (8-16px gaps), dense information',
+          motion: 'Instant transitions, no delays',
+          details: 'Syntax highlighting, line numbers, code blocks'
+        }
+      },
     ],
   },
   {
@@ -45,9 +153,45 @@ const ARCHETYPE_EXAMPLES = [
     description: 'Pixel fonts, neon colors, 8-bit',
     color: 'from-fuchsia-900 to-purple-900',
     examples: [
-      { name: 'Poolsuite', url: 'https://poolsuite.net', screenshot: 'https://api.microlink.io/?url=https://poolsuite.net&screenshot=true&embed=screenshot.url' },
-      { name: 'Bruno Simon', url: 'https://bruno-simon.com', screenshot: 'https://api.microlink.io/?url=https://bruno-simon.com&screenshot=true&embed=screenshot.url' },
-      { name: 'Windows 93', url: 'https://www.windows93.net', screenshot: 'https://api.microlink.io/?url=https://www.windows93.net&screenshot=true&embed=screenshot.url' },
+      {
+        name: 'Poolsuite',
+        url: 'https://poolsuite.net',
+        screenshot: 'https://api.microlink.io/?url=https://poolsuite.net&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Rounded sans (Comic Sans-adjacent), 16-20px, playful',
+          colors: 'Pastel (pink/blue/yellow), gradients, retro palette',
+          layout: 'Centered cards, floating elements, sticker aesthetic',
+          spacing: 'Varied (24-80px), playful asymmetry',
+          motion: 'Wobble animations, parallax scrolling, float effects',
+          details: 'Soft shadows, rounded corners (16-24px), illustrations'
+        }
+      },
+      {
+        name: 'Bruno Simon',
+        url: 'https://bruno-simon.com',
+        screenshot: 'https://api.microlink.io/?url=https://bruno-simon.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Bold sans-serif, 14-18px, clean UI',
+          colors: 'Dark bg, white text, colorful 3D elements',
+          layout: '3D canvas full-screen, minimal UI overlay',
+          spacing: 'UI elements: compact (12-16px), spacious canvas',
+          motion: '3D physics, interactive elements, smooth 60fps',
+          details: 'WebGL rendering, car/road metaphor, gamified'
+        }
+      },
+      {
+        name: 'Windows 93',
+        url: 'https://www.windows93.net',
+        screenshot: 'https://api.microlink.io/?url=https://www.windows93.net&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Pixel font (Press Start 2P), 8-12px, bitmap',
+          colors: 'Neon (magenta/cyan/yellow), black bg, high saturation',
+          layout: 'OS window metaphor, draggable windows, desktop UI',
+          spacing: 'Pixelated 8px grid, retro OS spacing',
+          motion: 'Glitch effects, cursor trails, animated backgrounds',
+          details: 'Pixel art icons, window chrome, 90s nostalgia'
+        }
+      },
     ],
   },
   {
@@ -56,9 +200,45 @@ const ARCHETYPE_EXAMPLES = [
     description: 'Color blocking, shapes, bold',
     color: 'from-blue-900 to-blue-800',
     examples: [
-      { name: 'Linear', url: 'https://linear.app', screenshot: 'https://api.microlink.io/?url=https://linear.app&screenshot=true&embed=screenshot.url' },
-      { name: 'Stripe', url: 'https://stripe.com', screenshot: 'https://api.microlink.io/?url=https://stripe.com&screenshot=true&embed=screenshot.url' },
-      { name: 'Vercel', url: 'https://vercel.com', screenshot: 'https://api.microlink.io/?url=https://vercel.com&screenshot=true&embed=screenshot.url' },
+      {
+        name: 'Linear',
+        url: 'https://linear.app',
+        screenshot: 'https://api.microlink.io/?url=https://linear.app&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Inter/SF Pro, 14-16px, -0.02em tracking, 500 weight',
+          colors: 'True black (#000), white (#fff), purple accent (#5e6ad2)',
+          layout: 'Centered, max-width 1200px, symmetric grid',
+          spacing: 'Generous (80-120px sections), 40px padding',
+          motion: 'Subtle fades (200ms), smooth scroll, polished',
+          details: 'No borders, soft gradients, clean edges, minimal'
+        }
+      },
+      {
+        name: 'Stripe',
+        url: 'https://stripe.com',
+        screenshot: 'https://api.microlink.io/?url=https://stripe.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Camphor/sans-serif, 16-18px, medium weight',
+          colors: 'White bg, black text, blue (#635bff) accent',
+          layout: 'Asymmetric hero, grid-based content, diagonal dividers',
+          spacing: 'Variable (60-100px), responsive scaling',
+          motion: 'Animated gradients, smooth scroll reveals',
+          details: 'Gradient meshes, geometric shapes, depth layers'
+        }
+      },
+      {
+        name: 'Vercel',
+        url: 'https://vercel.com',
+        screenshot: 'https://api.microlink.io/?url=https://vercel.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Geist/mono hybrid, 14-16px, tight spacing',
+          colors: 'True black (#000), white (#fff), no color',
+          layout: 'Full-width sections, edge-to-edge, no max-width',
+          spacing: 'Extreme (120-200px section gaps), minimal padding',
+          motion: 'Fast (100ms), instant feedback, no delays',
+          details: 'Thin borders (1px), sharp corners, monochromatic'
+        }
+      },
     ],
   },
   {
@@ -67,9 +247,45 @@ const ARCHETYPE_EXAMPLES = [
     description: 'Elegant serifs, large whitespace',
     color: 'from-stone-900 to-stone-800',
     examples: [
-      { name: 'Apple', url: 'https://www.apple.com', screenshot: 'https://api.microlink.io/?url=https://www.apple.com&screenshot=true&embed=screenshot.url' },
-      { name: 'Rolex', url: 'https://www.rolex.com', screenshot: 'https://api.microlink.io/?url=https://www.rolex.com&screenshot=true&embed=screenshot.url' },
-      { name: 'Bottega Veneta', url: 'https://www.bottegaveneta.com', screenshot: 'https://api.microlink.io/?url=https://www.bottegaveneta.com&screenshot=true&embed=screenshot.url' },
+      {
+        name: 'Apple',
+        url: 'https://www.apple.com',
+        screenshot: 'https://api.microlink.io/?url=https://www.apple.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'SF Pro Display, 21-80px headlines, light/medium weights',
+          colors: 'White bg, black text, minimal color (product images)',
+          layout: 'Large hero images, centered text, single column flow',
+          spacing: 'Massive (150-300px gaps), generous padding',
+          motion: 'Smooth scrollytelling, parallax, video backgrounds',
+          details: 'High-res images, soft shadows, rounded corners (12px)'
+        }
+      },
+      {
+        name: 'Rolex',
+        url: 'https://www.rolex.com',
+        screenshot: 'https://api.microlink.io/?url=https://www.rolex.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Serif headers (28-48px), light sans body (14-16px)',
+          colors: 'Black/white/gold (#d4af37), minimal palette',
+          layout: 'Narrow column (700px), centered, ample margins',
+          spacing: 'Luxurious (100-200px), single element focus',
+          motion: 'Slow fades (600ms), elegant transitions',
+          details: 'Elegant dividers, gold accents, serif details'
+        }
+      },
+      {
+        name: 'Bottega Veneta',
+        url: 'https://www.bottegaveneta.com',
+        screenshot: 'https://api.microlink.io/?url=https://www.bottegaveneta.com&screenshot=true&embed=screenshot.url',
+        design: {
+          typography: 'Light serif (300 weight), 18-24px, letter-spacing +0.05em',
+          colors: 'Cream/beige bg, black text, earth tones',
+          layout: 'Image-first, minimal text overlay, editorial flow',
+          spacing: 'Extreme whitespace (200-400px), breathing room',
+          motion: 'Slow reveals (800ms), lazy image loads',
+          details: 'Thin borders, elegant typography, refined aesthetic'
+        }
+      },
     ],
   },
 ];
@@ -104,36 +320,133 @@ export default function ConfigPage() {
   const [selectedArchetype, setSelectedArchetype] = useState<number>(0);
   const [selectedExamples, setSelectedExamples] = useState<string[]>([]);
 
-  // Auto-select archetype when user picks 2+ examples from same category
-  useEffect(() => {
-    if (selectedExamples.length < 2) return;
-
-    const archetypeCounts: Record<number, number> = {};
-    selectedExamples.forEach((exampleUrl) => {
-      const archetype = ARCHETYPE_EXAMPLES.find((a) =>
-        a.examples.some((e) => e.url === exampleUrl)
-      );
-      if (archetype) {
-        archetypeCounts[archetype.id] = (archetypeCounts[archetype.id] || 0) + 1;
-      }
-    });
-
-    // Find archetype with most selections
-    const suggested = Object.entries(archetypeCounts)
-      .sort(([, a], [, b]) => b - a)[0]?.[0];
-
-    if (suggested && archetypeCounts[Number(suggested)] >= 2) {
-      setSelectedArchetype(Number(suggested));
-    }
-  }, [selectedExamples]);
-
   const toggleExample = (url: string) => {
     setSelectedExamples((prev) =>
       prev.includes(url) ? prev.filter((u) => u !== url) : [...prev, url]
     );
   };
 
+  // Parse design attributes from text descriptions into structured values
+  const parseDesignAttributes = (design: {
+    typography: string;
+    colors: string;
+    layout: string;
+    spacing: string;
+    motion: string;
+    details: string;
+  }) => {
+    // Extract font family (first font mentioned)
+    const fontMatch = design.typography.match(/([A-Z][a-z]+(?:\s[A-Z][a-z]+)*)/);
+    const fontFamily = fontMatch ? fontMatch[1] : 'Inter';
+
+    // Extract base font size (average if range)
+    const sizeMatch = design.typography.match(/(\d+)(?:-(\d+))?px/);
+    const fontSize = sizeMatch ? (sizeMatch[2] ? Math.round((parseInt(sizeMatch[1]) + parseInt(sizeMatch[2])) / 2) : parseInt(sizeMatch[1])) : 16;
+
+    // Extract font weight
+    const weightMatch = design.typography.match(/(\d{3})\s*weight/);
+    const fontWeight = weightMatch ? parseInt(weightMatch[1]) : 400;
+
+    // Extract letter spacing
+    const trackingMatch = design.typography.match(/([-\d.]+)em\s*tracking/);
+    const letterSpacing = trackingMatch ? trackingMatch[1] + 'em' : 'normal';
+
+    // Extract colors (hex codes)
+    const hexMatches = design.colors.match(/#[0-9A-Fa-f]{3,6}/g) || [];
+    const colorBg = hexMatches[0] || '#000000';
+    const colorText = hexMatches[1] || '#ffffff';
+    const colorAccent = hexMatches[2] || hexMatches[0] || '#5e6ad2';
+
+    // Extract max width
+    const widthMatch = design.layout.match(/(\d+)px/);
+    const maxWidth = widthMatch ? parseInt(widthMatch[1]) : 1200;
+
+    // Extract alignment
+    const alignment = design.layout.toLowerCase().includes('centered') ? 'centered' :
+                     design.layout.toLowerCase().includes('full') ? 'full-width' : 'left';
+
+    // Extract section spacing (average if range)
+    const spacingMatch = design.spacing.match(/(\d+)(?:-(\d+))?px/);
+    const sectionSpacing = spacingMatch ? (spacingMatch[2] ? Math.round((parseInt(spacingMatch[1]) + parseInt(spacingMatch[2])) / 2) : parseInt(spacingMatch[1])) : 100;
+
+    // Extract padding
+    const paddingMatch = design.spacing.match(/(\d+)px\s*padding/);
+    const padding = paddingMatch ? parseInt(paddingMatch[1]) : 40;
+
+    // Extract motion duration
+    const durationMatch = design.motion.match(/(\d+)ms/);
+    const motionDuration = durationMatch ? parseInt(durationMatch[1]) : 200;
+
+    // Extract motion style
+    const motionStyle = design.motion.toLowerCase().includes('fade') ? 'fade' :
+                       design.motion.toLowerCase().includes('slide') ? 'slide' :
+                       design.motion.toLowerCase().includes('snap') ? 'snap' : 'fade';
+
+    // Extract border info
+    const borderMatch = design.details.match(/(\d+)px\s*border/);
+    const borderWidth = design.details.toLowerCase().includes('no border') ? 0 : (borderMatch ? parseInt(borderMatch[1]) : 1);
+
+    // Extract border radius
+    const borderRadius = design.details.toLowerCase().includes('sharp') ||
+                        design.details.toLowerCase().includes('clean edges') ? 0 :
+                        design.details.toLowerCase().includes('rounded') ? 8 : 0;
+
+    return {
+      fontFamily,
+      fontSize,
+      fontWeight,
+      letterSpacing,
+      colorBg,
+      colorText,
+      colorAccent,
+      maxWidth,
+      alignment,
+      sectionSpacing,
+      padding,
+      motionDuration,
+      motionStyle,
+      borderWidth,
+      borderRadius
+    };
+  };
+
   const downloadConfig = () => {
+    // Build design inspirations section with embedded design specs AND parsed attributes
+    const inspirationsText = selectedExamples.length > 0
+      ? `\ndesign_inspirations:${selectedExamples.map(url => {
+          const example = ARCHETYPE_EXAMPLES.flatMap(a => a.examples).find(e => e.url === url);
+          if (!example) return '';
+          const attrs = parseDesignAttributes(example.design);
+          return `
+  - name: "${example.name}"
+    # Extracted attributes (use these programmatically)
+    attributes:
+      fontFamily: "${attrs.fontFamily}"
+      fontSize: ${attrs.fontSize}
+      fontWeight: ${attrs.fontWeight}
+      letterSpacing: "${attrs.letterSpacing}"
+      colorBg: "${attrs.colorBg}"
+      colorText: "${attrs.colorText}"
+      colorAccent: "${attrs.colorAccent}"
+      maxWidth: ${attrs.maxWidth}
+      alignment: "${attrs.alignment}"
+      sectionSpacing: ${attrs.sectionSpacing}
+      padding: ${attrs.padding}
+      motionDuration: ${attrs.motionDuration}
+      motionStyle: "${attrs.motionStyle}"
+      borderWidth: ${attrs.borderWidth}
+      borderRadius: ${attrs.borderRadius}
+    # Original descriptions (for reference)
+    descriptions:
+      typography: "${example.design.typography}"
+      colors: "${example.design.colors}"
+      layout: "${example.design.layout}"
+      spacing: "${example.design.spacing}"
+      motion: "${example.design.motion}"
+      details: "${example.design.details}"`;
+        }).join('')}`
+      : '';
+
     const yaml = `name: "${config.name || 'Your Name'}"
 email: "${config.email}"
 github: "${config.github}"
@@ -145,7 +458,7 @@ design:
   playfulness: ${config.design.playfulness}
   animation: ${config.design.animation}
   color_intensity: ${config.design.color_intensity}
-  archetype: ${selectedArchetype}
+  archetype: ${selectedArchetype}${inspirationsText}
 
 content:
   tone: "${config.content.tone}"
@@ -329,20 +642,27 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
           {/* Column 2: Visual Style */}
           <div className="lg:col-span-2">
             <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-500 mb-4">
-              Visual Style
+              Design Inspirations
             </h2>
             <p className="text-neutral-400 text-sm mb-6">
-              Click 2-3 websites you like. We'll suggest the matching archetype.
+              Click websites whose design you admire. The AI will draw inspiration from their specific attributes (typography, spacing, color, layout).
             </p>
 
-            {selectedArchetype > 0 && (
-              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6">
-                <p className="text-green-400 font-medium">
-                  ✓ Suggested: {ARCHETYPE_EXAMPLES[selectedArchetype - 1]?.name}
+            {selectedExamples.length > 0 && (
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
+                <p className="text-blue-400 font-medium mb-2">
+                  ✓ {selectedExamples.length} design inspiration{selectedExamples.length !== 1 ? 's' : ''} selected
                 </p>
-                <p className="text-sm text-neutral-400 mt-1">
-                  Based on your {selectedExamples.length} selection{selectedExamples.length !== 1 ? 's' : ''}
-                </p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedExamples.map((url) => {
+                    const example = ARCHETYPE_EXAMPLES.flatMap(a => a.examples).find(e => e.url === url);
+                    return (
+                      <span key={url} className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded">
+                        {example?.name || url}
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
             )}
 

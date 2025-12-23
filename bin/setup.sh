@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Site-in-a-Box: Unified Setup Script
+# Persona: Unified Setup Script
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -15,11 +15,11 @@ clear
 
 echo -e "${CYAN}"
 cat << "EOF"
-   ____  _ __                _                ____
-  / ___|(_) /____     ()__   ( ) __           | __ )  _____  __
-  \___ \| | __/ _ \  / / -_) |/ / _ \ ________|  _ \ / _ \ \/ /
-   ___) | | ||  __/ / / \__     / (_) |_______| |_) | (_) >  <
-  |____/|_|\__\___|/_/\____|    \___/        |____/ \___/_/\_\
+    ____
+   / __ \___  ______________  ____  ____ _
+  / /_/ / _ \/ ___/ ___/ __ \/ __ \/ __ `/
+ / ____/  __/ /  (__  ) /_/ / / / / /_/ /
+/_/    \___/_/  /____/\____/_/ /_/\__,_/
 
 EOF
 echo -e "${NC}"
@@ -135,5 +135,14 @@ if [ ! -f "$HOME/.claude/settings.json" ]; then
     read -r
 fi
 
-# Launch Claude Code with instructions loaded
-exec claude chat -f "$PROJECT_DIR/.agent/instructions.md"
+# Launch Claude Code in the project directory
+cd "$PROJECT_DIR"
+
+echo ""
+echo -e "${CYAN}Starting Claude Code...${NC}"
+echo ""
+echo -e "When Claude starts, say:"
+echo -e "  ${GREEN}\"Read .agent/instructions.md and build my portfolio\"${NC}"
+echo ""
+
+exec claude

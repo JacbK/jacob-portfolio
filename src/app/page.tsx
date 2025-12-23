@@ -74,7 +74,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
-                  Site-in-a-Box
+                  Persona
                 </a>
                 {' '}— Run <code className="text-neutral-400">./bin/setup.sh</code> to get started
               </>

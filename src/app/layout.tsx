@@ -15,18 +15,18 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Site-in-a-Box | AI-Powered Portfolio",
+  title: "Persona | AI-Powered Portfolio",
   description: "A personal portfolio website built with AI assistance using Claude Code.",
   keywords: ["portfolio", "developer", "engineer", "projects"],
-  authors: [{ name: "Site-in-a-Box" }],
+  authors: [{ name: "Persona" }],
   openGraph: {
-    title: "Site-in-a-Box | AI-Powered Portfolio",
+    title: "Persona | AI-Powered Portfolio",
     description: "A personal portfolio website built with AI assistance using Claude Code.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Site-in-a-Box | AI-Powered Portfolio",
+    title: "Persona | AI-Powered Portfolio",
     description: "A personal portfolio website built with AI assistance using Claude Code.",
   },
 };

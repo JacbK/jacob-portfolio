@@ -1,4 +1,4 @@
-# Site-in-a-Box
+# Persona
 
 A Next.js portfolio template that doesn't just use AI—it uses AI that actually gives a damn about quality.
 
@@ -15,7 +15,7 @@ Most AI portfolio generators spit out the same generic template with your name s
 ## Quick Start
 
 ```bash
-git clone https://github.com/your-username/site-in-a-box.git my-portfolio
+git clone https://github.com/your-username/persona.git my-portfolio
 cd my-portfolio
 
 # Run setup (handles everything)

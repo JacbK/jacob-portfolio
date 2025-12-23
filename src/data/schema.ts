@@ -1,4 +1,4 @@
-// Site-in-a-Box: User Profile Schema
+// Persona: User Profile Schema
 // This file defines the TypeScript interfaces for user data
 // The AI agent populates user.json following this schema
 
