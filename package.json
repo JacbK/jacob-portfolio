@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "agent:refresh": "./bin/refresh.sh",
+    "agent:project": "./bin/add-project.sh",
+    "agent:job": "./bin/update-job.sh",
+    "agent:rewrite": "./bin/rewrite.sh"
   },
   "dependencies": {
     "clsx": "^2.1.1",

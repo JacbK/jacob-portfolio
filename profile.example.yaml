@@ -1,0 +1,60 @@
+# Site-in-a-Box: Example Profile Configuration
+# Copy this to profile.yaml and customize
+
+name: "Alex Chen"
+email: "alex@example.com"
+github: "https://github.com/alexchen"
+linkedin: "https://linkedin.com/in/alexchen"
+twitter: "https://twitter.com/alexchen"
+website: "https://alexchen.dev"
+
+design:
+  creativity: 6        # Modern but not experimental
+  simplicity: 8        # Clean, minimal aesthetic
+  playfulness: 3       # Professional with subtle personality
+  animation: 5         # Balanced motion
+  color_intensity: 2   # Mostly monochrome with subtle accents
+
+content:
+  tone: "conversational"  # Approachable first-person
+  length: "balanced"      # Mix of short and detailed
+  focus: "projects"       # Emphasize what I've built
+
+layout:
+  sections:
+    hero: true
+    about: true
+    projects: true
+    experience: true
+    skills: true
+    contact: true
+
+  project_style: "grid"
+  skills_style: "pills"
+
+special:
+  tagline: ""  # Let AI generate
+  fun_facts: false
+  github_stats: true
+  testimonials: false
+  colors:
+    primary: ""
+    accent: ""
+
+ai:
+  quality_bar: 8          # High standards, iterate 2-3 times
+  research_depth: 7       # Deep research across sources
+  copy_creativity: 6      # Creative but grounded
+
+notes: |
+  I'm a full-stack engineer who recently left a startup to work on developer tools.
+  I care a lot about DX and performance. Most of my projects are CLI tools and libraries.
+
+  I'm targeting roles at infrastructure companies (Vercel, Railway, Render type places).
+
+  Design inspiration: Linear's website, Stripe docs, Rauno's portfolio
+
+  Highlight these projects:
+  - my CLI tool for managing monorepos (5K stars)
+  - the performance optimization work I did at my last startup
+  - my open source contributions to Next.js

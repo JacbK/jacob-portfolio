@@ -1,118 +1,189 @@
 # Site-in-a-Box
 
-A Next.js portfolio template that uses AI to build itself. Give it your GitHub or LinkedIn, and it handles the rest.
+A Next.js portfolio template that doesn't just use AI—it uses AI that actually gives a damn about quality.
 
-## What is this?
+## What Makes This Different
 
-Most portfolio templates make you copy-paste your info into a dozen files. This one asks Claude to do the boring work.
+Most AI portfolio generators spit out the same generic template with your name swapped in. This one:
 
-You run a script, answer a couple questions, and the AI researches you online, pulls your projects and experience, writes compelling copy, and populates everything automatically.
-
-The result? A modern, animated portfolio site that actually reflects your work.
+1. **Self-grades its work** and iterates until it's actually good
+2. **Reads your preferences** from a config file (creativity, simplicity, tone, etc.)
+3. **Uses your materials** (resume, photos) if you provide them
+4. **Customizes the design** based on sliders, not templates
+5. **Writes like a human** because it's been told exactly how not to sound like AI
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/your-username/site-in-a-box.git my-portfolio
 cd my-portfolio
+
+# Copy the config template
+cp profile.example.yaml profile.yaml
+
+# Optional but recommended: Add your materials
+cp ~/resume.pdf materials/documents/
+cp ~/headshot.jpg materials/images/profile.jpg
+
+# Fill out your preferences
+open profile.yaml  # Or use your editor of choice
+
+# Run the setup (handles npm install + AI)
 ./bin/setup.sh
 ```
 
-The setup script will:
-1. Install dependencies
-2. Check for Claude Code
-3. Launch an AI agent that interviews you and builds your site
+The AI will:
+- Read your config
+- Research you online (GitHub, LinkedIn, etc.)
+- Extract info from your resume if provided
+- Generate content and design
+- Grade itself and iterate until it meets your quality bar
+- Build your portfolio
 
-If you don't have Claude Code installed, the script will tell you how to get it.
+## The Config File
+
+Edit `profile.yaml` before running setup. This is where you customize everything:
+
+### Design Sliders (1-10)
+
+- **Creativity**: 1 = boring corporate, 10 = experimental artist
+- **Simplicity**: 1 = information overload, 10 = ultra minimal
+- **Playfulness**: 1 = serious business, 10 = fun and quirky
+- **Animation**: 1 = static page, 10 = motion design showcase
+- **Color Intensity**: 1 = monochrome, 10 = vibrant rainbow
+
+### Content Preferences
+
+- **Tone**: professional | conversational | technical | creative
+- **Length**: concise | balanced | detailed
+- **Focus**: projects | experience | skills | personality
+
+### AI Behavior
+
+- **Quality Bar (1-10)**: How self-critical should the AI be?
+  - 1-3: Accept first draft
+  - 7-8: Iterate 2-3 times
+  - 9-10: Iterate until genuinely excellent
+
+- **Research Depth (1-10)**: How thorough should research be?
+  - 1-3: Quick scan
+  - 7-8: Deep dive
+  - 9-10: Exhaustive search
+
+Example config:
+```yaml
+design:
+  creativity: 6
+  simplicity: 8
+  playfulness: 3
+  animation: 5
+  color_intensity: 2
+
+content:
+  tone: "technical"
+  length: "concise"
+  focus: "projects"
+
+ai:
+  quality_bar: 8
+  research_depth: 7
+  copy_creativity: 5
+```
+
+## The Materials Folder
+
+The `/materials` folder is optional but recommended:
+
+```
+materials/
+├── images/
+│   ├── profile.jpg          # Your headshot
+│   ├── project-name.png     # Project screenshots
+│   └── og-image.png         # Social share image
+└── documents/
+    ├── resume.pdf           # AI will parse this
+    ├── bio.txt              # Pre-written bio (optional)
+    └── projects.txt         # Project list (optional)
+```
+
+The AI will:
+- Extract experience, education, skills from your resume
+- Use your photos in the UI
+- Reference any pre-written content you provide
+
+If you don't provide materials, it'll just use web research.
+
+## How the AI Works
+
+### Phase 1: Configuration Analysis
+Reads `profile.yaml` and `/materials` to understand your preferences and available assets.
+
+### Phase 2: Research & Discovery
+- Scrapes GitHub for repos, languages, stars
+- Reads LinkedIn for experience and skills
+- Searches for blog posts, talks, projects
+- Parses your resume if provided
+
+### Phase 3: Content Generation
+Writes your bio, tagline, project descriptions using:
+- Your specified tone and length
+- Anti-patterns to avoid sounding like AI
+- Specific examples over generic statements
+
+### Phase 4: Self-Grading
+The AI scores itself on:
+1. **Authenticity** - Does this feel like a real person?
+2. **Design Coherence** - Does it match the preferences?
+3. **Content Quality** - Is the writing compelling?
+4. **Technical Accuracy** - Are facts correct?
+5. **Visual Polish** - Does it look professional?
+
+If any score is below your quality bar, it iterates and tries again.
+
+### Phase 5: Implementation
+Writes to `src/data/user.json` and customizes components based on your design preferences.
+
+### Phase 6: Verification
+Runs build tests, verifies links, checks images, confirms accessibility.
 
 ## What You Get
 
-- **Animated hero section** with your name, title, and social links
-- **Project showcase** in a responsive bento grid layout
-- **Terminal-style about section** because we're all nerds here
-- **Dark theme** that doesn't burn your retinas
-- **Fully typed** with TypeScript
-- **Production ready** - just add content and deploy
+Three main components that adapt to your preferences:
 
-## Requirements
+- **Hero Section** - Name, title, tagline, social links, CTA buttons
+- **Project Grid** - Bento-style layout with project cards
+- **Terminal Section** - Stylized terminal for your "about me"
 
-- Node.js 18 or newer
-- Claude Code (for the AI setup flow)
+Plus:
+- Fully responsive
+- Dark theme (customizable)
+- TypeScript throughout
+- Framer Motion animations (intensity based on your slider)
+- Production-ready build
 
-## The Manual Way
+## Manual Mode
 
-Not into AI agents? That's fair. You can populate it yourself:
+Don't trust AI? Fair enough.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then edit `src/data/user.json` with your info. The schema is in `src/data/schema.ts`.
+Then edit `src/data/user.json` directly. The schema is in `src/data/schema.ts`.
 
-## Supercharging the AI (Optional)
+## Customization After Generation
 
-The AI agent works fine out of the box, but if you want it to really dig into your online presence, you can set up MCP servers:
+The AI generates the initial build, but you can tweak:
 
-**Exa** - AI-powered search for finding your work across the web
-**GitHub API** - Pulls your repos, languages, contribution stats
-**Brave Search** - General web search for talks, mentions, etc.
-
-Config examples are in `mcp-requirements.json`. The agent will work without these, it just won't be as thorough.
-
-## How It Works
-
-1. You give the agent your name and a profile link (GitHub, LinkedIn, whatever)
-2. It searches for your projects, roles, tech stack, writing, talks
-3. It generates professional copy (tagline, bio, project descriptions)
-4. It writes everything to `src/data/user.json`
-5. The UI reads that JSON and renders your site
-
-The skeleton components are already built. The AI just fills in the content.
-
-## Project Structure
-
-```
-src/
-├── app/              # Next.js app router
-├── components/ui/    # Hero, BentoGrid, Terminal
-└── data/
-    ├── schema.ts     # TypeScript interfaces
-    └── user.json     # Your content (AI populated)
-
-.agent/
-└── instructions.md   # The AI's "job description"
-
-bin/
-└── setup.sh         # Bootstrap script
-```
-
-## Customization
-
-**Colors**: The site uses Tailwind's neutral palette. Change classes in the components to adjust.
-
-**Fonts**: Currently Inter and JetBrains Mono. Swap in `src/app/layout.tsx`.
-
-**Sections**: Add new sections by:
-1. Updating the schema in `src/data/schema.ts`
-2. Creating a component in `src/components/ui/`
-3. Adding it to `src/app/page.tsx`
-4. Updating `.agent/instructions.md` so the AI knows to populate it
-
-## Deployment
-
-This is a standard Next.js app. Deploy anywhere:
-
-**Vercel** (easiest):
-```bash
-npm install -g vercel
-vercel
-```
-
-**Others**: Works with Netlify, Railway, Render, or any Node.js host.
+**Colors**: Edit Tailwind classes or set custom colors in `profile.yaml`
+**Fonts**: Change in `src/app/layout.tsx`
+**Sections**: Add/remove in `src/app/page.tsx`
+**Components**: Modify `src/components/ui/*.tsx`
 
 ## Commands
 
+### Development
 ```bash
 npm run dev      # http://localhost:3000
 npm run build    # Production build
@@ -120,27 +191,112 @@ npm run start    # Production server
 npm run lint     # ESLint
 ```
 
+### AI Maintenance (Keep Your Portfolio Fresh)
+
+After the initial build, use these commands to keep your portfolio up-to-date:
+
+```bash
+npm run agent:refresh   # Re-scrape GitHub/LinkedIn for changes
+npm run agent:project   # Add or edit a single project
+npm run agent:job       # Update work experience (new job, promotion, etc.)
+npm run agent:rewrite   # Regenerate copy (tagline, bio, descriptions)
+```
+
+Each command launches Claude Code with specialized instructions for that task.
+
+#### Refresh: Update from Sources
+```bash
+npm run agent:refresh
+```
+- Checks GitHub for new repos, star counts, tech stack changes
+- Checks LinkedIn for job changes, new skills
+- Merges updates intelligently (preserves manual edits)
+- Shows diff of changes before applying
+
+**When to use**: Monthly, or after major project launches
+
+#### Add/Edit Project
+```bash
+npm run agent:project
+```
+- Add new project from GitHub URL or manual entry
+- Edit existing project descriptions
+- Maintains same quality bar as initial build
+- Handles images from `/materials` folder
+
+**When to use**: After shipping a new project
+
+#### Update Experience
+```bash
+npm run agent:job
+```
+- Add new job or promotion
+- Update current role responsibilities
+- Mark old jobs as past
+- Writes compelling, impact-focused descriptions
+
+**When to use**: After job changes, promotions, major achievements
+
+#### Regenerate Copy
+```bash
+npm run agent:rewrite
+```
+- Rewrite tagline, bio, or project descriptions
+- Change tone (professional → conversational, etc.)
+- Keeps facts, updates style
+- Self-grades before applying
+
+**When to use**: When your voice changes, targeting different roles, or content feels stale
+
+### How AI Maintenance Works
+
+All updates follow these principles:
+1. **Preserve manual edits** - Fields marked "manual" in metadata aren't auto-overwritten
+2. **Show diffs** - You see what changed before it's applied
+3. **Quality checks** - Same grading rubric as initial build
+4. **Validate** - Tests build, checks links, verifies consistency
+
+## Deployment
+
+```bash
+# Vercel (easiest)
+npm install -g vercel
+vercel
+
+# Or use Netlify, Railway, Render, etc.
+```
+
 ## Troubleshooting
 
-**"Port 3000 in use"**
-Kill the process: `lsof -ti:3000 | xargs kill -9`
+**"AI keeps asking me questions"**
+Fill out `profile.yaml` more completely. The more you specify, the less it needs to ask.
 
-**"Empty portfolio showing"**
-The `user.json` is empty. Run `./bin/setup.sh` or populate it manually.
+**"The design doesn't match my sliders"**
+The AI interprets sliders as guidance, not exact specifications. If creativity=8 and simplicity=8 conflict, it makes judgment calls. Be explicit in the `notes` field.
 
-**"Fonts not loading"**
-This uses Google Fonts (Inter + JetBrains Mono). If you're offline, they'll fallback to system fonts.
+**"Quality bar 10 takes forever"**
+Yeah, that's intentional. It'll iterate 5+ times to get things perfect. Use 7-8 for a good balance.
 
-**"Agent not finding my info"**
-Make sure your GitHub/LinkedIn is public. For better results, set up MCP servers (see above).
+**"It didn't use my materials"**
+Make sure filenames match:
+- `profile.jpg` or `profile.png` (not `headshot.jpg`)
+- `resume.pdf` (not `CV.pdf`)
+- Project images: `project-name.png` (kebab-case)
 
-## Why This Exists
+**"The content is still generic"**
+Increase `ai.copy_creativity` and `ai.quality_bar` in the config. Also fill out the `notes` section with specific details about yourself.
 
-Building a portfolio shouldn't take a week. Updating it shouldn't take an afternoon.
+## How It Avoids Looking Like AI
 
-I wanted something that could scaffold itself intelligently, look modern without being trendy, and get out of your way so you can ship it and forget about it.
+The instructions tell the AI to:
+- Use odd numbers (3 columns, not 4)
+- Vary typography scale (18px, 28px, not 16px, 24px)
+- Add intentional imperfection (asymmetric spacing)
+- Use specific language, not generic ("Things I've shipped" not "My Projects")
+- Lead with what makes you unique, not what makes you qualified
+- Write problem → solution → impact, not feature lists
 
-Use it. Fork it. Break it. Whatever.
+Plus the self-grading forces it to catch generic patterns.
 
 ## Stack
 
@@ -148,9 +304,9 @@ Use it. Fork it. Break it. Whatever.
 - React 19
 - TypeScript
 - Tailwind CSS v4
-- Framer Motion (animations)
-- Lucide React (icons)
+- Framer Motion
+- Lucide React
 
 ## License
 
-MIT - Do what you want with it.
+MIT - Clone it, fork it, sell it, whatever.

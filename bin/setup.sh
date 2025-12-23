@@ -32,7 +32,7 @@ EOF
 
 # Check for required tools
 check_dependencies() {
-    echo -e "${BLUE}[1/4]${NC} Checking dependencies..."
+    echo -e "${BLUE}[1/5]${NC} Checking dependencies..."
 
     # Check for Node.js
     if ! command -v node &> /dev/null; then
@@ -55,6 +55,19 @@ check_dependencies() {
     fi
     echo -e "  ${GREEN}✓${NC} npm $(npm -v)"
 
+    # Check for profile.yaml
+    if [ ! -f "profile.yaml" ]; then
+        echo -e "  ${YELLOW}!${NC} profile.yaml not found"
+        echo ""
+        echo -e "${YELLOW}You need to create your profile config first:${NC}"
+        echo -e "  ${CYAN}cp profile.example.yaml profile.yaml${NC}"
+        echo ""
+        echo "Then edit profile.yaml with your information and preferences."
+        echo ""
+        exit 1
+    fi
+    echo -e "  ${GREEN}✓${NC} profile.yaml found"
+
     # Check for Claude Code
     CLAUDE_CODE_INSTALLED=false
     if command -v claude &> /dev/null; then
@@ -64,17 +77,12 @@ check_dependencies() {
         echo -e "  ${YELLOW}!${NC} Claude Code not found"
     fi
 
-    # Check for screenshot-to-code (optional)
-    if command -v screenshot-to-code &> /dev/null; then
-        echo -e "  ${GREEN}✓${NC} screenshot-to-code detected (optional)"
-    fi
-
     echo ""
 }
 
 # Install npm dependencies
 install_dependencies() {
-    echo -e "${BLUE}[2/4]${NC} Installing dependencies..."
+    echo -e "${BLUE}[2/5]${NC} Installing dependencies..."
     npm install --silent
     echo -e "  ${GREEN}✓${NC} Dependencies installed"
     echo ""
@@ -82,7 +90,7 @@ install_dependencies() {
 
 # Create initial data file if it doesn't exist
 setup_data_file() {
-    echo -e "${BLUE}[3/4]${NC} Setting up data files..."
+    echo -e "${BLUE}[3/5]${NC} Setting up data files..."
 
     DATA_DIR="src/data"
     DATA_FILE="$DATA_DIR/user.json"
@@ -97,9 +105,30 @@ setup_data_file() {
     echo ""
 }
 
+# Verify profile configuration
+verify_profile() {
+    echo -e "${BLUE}[4/5]${NC} Verifying profile configuration..."
+
+    # Basic check that profile.yaml has been filled out
+    if grep -q 'name: ""' profile.yaml; then
+        echo -e "  ${YELLOW}⚠${NC}  Your profile.yaml appears to be empty"
+        echo ""
+        echo "Make sure you've filled out at least:"
+        echo "  - name"
+        echo "  - github or linkedin"
+        echo "  - design preferences (or keep defaults)"
+        echo ""
+        echo -e "Press Enter to continue anyway, or Ctrl+C to exit and edit..."
+        read -r
+    else
+        echo -e "  ${GREEN}✓${NC} Profile configuration looks good"
+    fi
+    echo ""
+}
+
 # Launch the AI agent
 launch_agent() {
-    echo -e "${BLUE}[4/4]${NC} Launching AI Architect..."
+    echo -e "${BLUE}[5/5]${NC} Launching AI Architect..."
     echo ""
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
@@ -158,6 +187,7 @@ main() {
     check_dependencies
     install_dependencies
     setup_data_file
+    verify_profile
     launch_agent
 }
 

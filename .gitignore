@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.claude
 /.pnp
 .pnp.*
 .yarn/*
@@ -35,6 +36,16 @@ yarn-error.log*
 
 # claude code local settings
 .claude/settings.local.json
+
+# user materials (don't commit personal files)
+materials/images/*
+materials/documents/*
+!materials/images/.gitkeep
+!materials/documents/.gitkeep
+!materials/README.md
+
+# populated user data
+src/data/user.json
 
 # vercel
 .vercel

@@ -47,6 +47,33 @@ export interface Bio {
   long: string;
 }
 
+export interface ProjectMeta {
+  source?: 'github' | 'manual';
+  added?: string;
+  last_updated?: string;
+}
+
+export interface ExperienceMeta {
+  source?: 'linkedin' | 'manual';
+  added?: string;
+  last_updated?: string;
+  current?: boolean;
+  promoted?: boolean;
+  promotion_date?: string;
+  end_date?: string;
+}
+
+export interface DataMeta {
+  last_refresh?: string;
+  last_full_build?: string;
+  last_copy_refresh?: string;
+  sources?: {
+    [key: string]: 'auto' | 'manual';
+  };
+  auto_fields?: string[];
+  manual_fields?: string[];
+}
+
 export interface UserProfile {
   name: string;
   title: string;
@@ -59,6 +86,7 @@ export interface UserProfile {
   techStack: TechStack;
   education?: Education[];
   achievements?: string[];
+  _meta?: DataMeta;
 }
 
 // Type guard to check if user data is populated
