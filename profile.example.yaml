@@ -28,11 +28,10 @@ design:
   playfulness: 4     # 1-10: How fun vs serious? (default: 4)
   animation: 5       # 1-10: How much motion? (default: 5)
   color_intensity: 4 # 1-10: How vibrant? (default: 4)
-  archetype: 0       # 0 = random, 1-6 = force specific archetype (default: 0 random)
 
 # Optional: Design inspirations from websites you like
-# Use the visual config UI at /config to select sites and download with pre-parsed attributes
-# The AI will blend these attributes programmatically (no manual interpretation)
+# Use the visual config UI at /config to select sites
+# The AI will synthesize these into a unique design (not copy any single one)
 # design_inspirations:
 #   - name: "Linear"
 #     attributes:

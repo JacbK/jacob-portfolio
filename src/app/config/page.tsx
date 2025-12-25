@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { ArrowLeft, Download, Sparkles, Upload, FileText, Image, X, Check } from 'lucide-react';
+import { ArrowLeft, Download, Sparkles, Upload, FileText, Image, X, Check, Terminal, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 const ARCHETYPE_EXAMPLES = [
@@ -302,7 +302,6 @@ export default function ConfigPage() {
       playfulness: 4,
       animation: 5,
       color_intensity: 4,
-      archetype: 0,
     },
     content: {
       tone: 'conversational',
@@ -317,10 +316,10 @@ export default function ConfigPage() {
     notes: '',
   });
 
-  const [selectedArchetype, setSelectedArchetype] = useState<number>(0);
   const [selectedExamples, setSelectedExamples] = useState<string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; path: string; folder: string }[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, folder: 'documents' | 'images') => {
@@ -498,8 +497,7 @@ design:
   simplicity: ${config.design.simplicity}
   playfulness: ${config.design.playfulness}
   animation: ${config.design.animation}
-  color_intensity: ${config.design.color_intensity}
-  archetype: ${selectedArchetype}${inspirationsText}
+  color_intensity: ${config.design.color_intensity}${inspirationsText}
 
 content:
   tone: "${config.content.tone}"
@@ -533,6 +531,53 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl max-w-md w-full p-8 text-center space-y-6">
+            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+              <Check size={32} className="text-green-500" />
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-2">Config Saved!</h2>
+              <p className="text-neutral-400">
+                Your profile has been saved to <code className="bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-300">profile.yaml</code>
+              </p>
+            </div>
+
+            <div className="bg-neutral-800 rounded-xl p-6 text-left">
+              <div className="flex items-center gap-3 mb-4">
+                <Terminal size={20} className="text-green-500" />
+                <span className="font-semibold">Next Step</span>
+              </div>
+              <p className="text-neutral-400 text-sm mb-4">
+                Go back to your terminal and press <kbd className="bg-neutral-700 px-2 py-1 rounded text-xs font-mono">Ctrl+C</kbd> to continue the setup.
+              </p>
+              <p className="text-neutral-500 text-xs">
+                The AI will automatically start building your portfolio.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="flex-1 px-4 py-3 bg-neutral-800 rounded-lg hover:bg-neutral-700 transition-colors text-sm"
+              >
+                Keep Editing
+              </button>
+              <button
+                onClick={() => window.close()}
+                className="flex-1 px-4 py-3 bg-green-600 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center justify-center gap-2"
+              >
+                Done
+                <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="border-b border-neutral-800 bg-neutral-950">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -555,7 +600,7 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
                     body: JSON.stringify({ yaml })
                   });
                   if (res.ok) {
-                    alert('✓ Saved to profile.yaml');
+                    setShowSuccessModal(true);
                   } else {
                     alert('Failed to save. Try Download instead.');
                   }
@@ -885,25 +930,7 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
               ))}
             </div>
 
-            <div className="mt-6 pt-6 border-t border-neutral-800">
-              <label className="block text-sm font-medium mb-2">
-                Or manually select archetype
-              </label>
-              <select
-                value={selectedArchetype}
-                onChange={(e) => setSelectedArchetype(parseInt(e.target.value))}
-                className="w-full bg-neutral-900 border border-neutral-800 rounded-md px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-white/20"
-              >
-                <option value={0}>Random (AI decides)</option>
-                {ARCHETYPE_EXAMPLES.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {a.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="border-t border-neutral-800 pt-8">
+            <div className="border-t border-neutral-800 pt-8 mt-6">
               <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-500 mb-6">
                 Design Preferences
               </h2>
@@ -986,7 +1013,7 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
                     body: JSON.stringify({ yaml })
                   });
                   if (res.ok) {
-                    alert('✓ Saved to profile.yaml');
+                    setShowSuccessModal(true);
                   } else {
                     alert('Failed to save. Try Download instead.');
                   }

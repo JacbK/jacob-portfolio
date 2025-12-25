@@ -1,27 +1,22 @@
-# Persona: Design System Reference
+# Skill: Design
 
-This document defines the visual design system for portfolio generation. The main agent instructions reference this file for all design-related decisions.
+Create a unique visual design by synthesizing from inspirations and preferences.
 
 ---
 
-## Archetype Quick Reference
+## Philosophy
 
-| # | Name | Typography | Colors | Layout | Key Pattern |
-|---|------|------------|--------|--------|-------------|
-| 1 | **Brutalist** | Monospace (Space Mono, IBM Plex Mono) | Black/white + red/cyan/yellow | Single column, harsh borders | `border-4`, NO cards, `<ul>` lists |
-| 2 | **Editorial** | Serif headers (Playfair, Lora) + sans body | Cream/charcoal + burgundy/olive | Asymmetric 70/30, sidebars | Pull quotes, image-first |
-| 3 | **Terminal** | Monospace only (JetBrains, Fira Code) | Black + green/amber/cyan | Fixed-width 80ch, CLI prompt | CRT aesthetic, ASCII borders |
-| 4 | **Retro Arcade** | Pixel fonts (Press Start 2P, VT323) | Deep purple/black + neon pink/cyan | Chunky 8px grid | SCORE displays, scanlines |
-| 5 | **Geometric** | Bold sans (Outfit, Manrope) | White/gray + blue/pink/orange | Overlapping shapes, diagonals | Color blocks, `-rotate-3` |
-| 6 | **Luxury** | Light serif (Cormorant, Bodoni) | Champagne/ivory + gold/silver | Narrow centered, huge spacing | `h-screen` sections, 150px+ gaps |
+**Don't follow templates.** Every portfolio should feel like it was designed specifically for this person.
+
+- Blend inspirations, don't copy them
+- Let the person's story drive the design
+- Be bold - safe designs are forgettable
 
 ---
 
 ## Using Design Inspirations
 
-If `design_inspirations` is provided in profile.yaml, each inspiration includes an `attributes` object with pre-parsed numeric values. **Use these directly.**
-
-### Example Structure
+If `design_inspirations` is provided in profile.yaml, each has attributes you can reference:
 
 ```yaml
 design_inspirations:
@@ -29,374 +24,194 @@ design_inspirations:
     attributes:
       fontFamily: "Inter"
       fontSize: 15
-      fontWeight: 500
-      letterSpacing: "-0.02em"
       colorBg: "#000000"
-      colorText: "#ffffff"
       colorAccent: "#5e6ad2"
       maxWidth: 1200
-      alignment: "centered"
       sectionSpacing: 100
-      padding: 40
-      motionDuration: 200
-      motionStyle: "fade"
-      borderWidth: 0
       borderRadius: 0
+      # ... etc
 ```
 
-### Merging Multiple Inspirations
+### How to Synthesize
 
-If multiple inspirations are selected, use this algorithm:
+Don't just average the values. Think about what makes each inspiration special:
 
-```python
-# Font: Use first inspiration
-fontFamily = inspirations[0].attributes.fontFamily
-fontWeight = inspirations[0].attributes.fontWeight
-letterSpacing = inspirations[0].attributes.letterSpacing
+1. **Identify the essence** of each inspiration
+   - Linear: Clean precision, subtle animations, developer-focused
+   - Stripe: Gradient magic, depth, polish
+   - Brutalist site: Raw honesty, no decoration
 
-# Numeric values: Average and round
-fontSize = round(average([i.attributes.fontSize for i in inspirations]))
-sectionSpacing = round(average([i.attributes.sectionSpacing for i in inspirations]))
-padding = round(average([i.attributes.padding for i in inspirations]))
-motionDuration = round(average([i.attributes.motionDuration for i in inspirations]))
-borderWidth = round(average([i.attributes.borderWidth for i in inspirations]))
-borderRadius = round(average([i.attributes.borderRadius for i in inspirations]))
+2. **Find the common thread** for this person
+   - What do their chosen inspirations say about their taste?
+   - What feeling should the portfolio evoke?
 
-# Max width: Median
-maxWidth = median([i.attributes.maxWidth for i in inspirations])
+3. **Create something new**
+   - Take the typography approach from one
+   - The color philosophy from another
+   - The layout concept from a third
+   - But make it cohesive
 
-# Colors: First inspiration's bg/text, blend accents
-colorBg = inspirations[0].attributes.colorBg
-colorText = inspirations[0].attributes.colorText
-colorAccent = blendHexColors([i.attributes.colorAccent for i in inspirations])
+### Example Synthesis
 
-# Other: First inspiration
-alignment = inspirations[0].attributes.alignment
-motionStyle = inspirations[0].attributes.motionStyle
-```
+User picked: Linear + Poolsuite + The Verge
 
-### Blend Hex Colors Helper
+- Linear → Clean typography, dark mode, precision
+- Poolsuite → Playful, retro, personality
+- The Verge → Bold headers, editorial feel
 
-```javascript
-function blendHexColors(hexArray) {
-  const rgb = hexArray.map(hex => {
-    const r = parseInt(hex.slice(1,3), 16);
-    const g = parseInt(hex.slice(3,5), 16);
-    const b = parseInt(hex.slice(5,7), 16);
-    return [r, g, b];
-  });
-  const avgR = Math.round(rgb.reduce((sum, c) => sum + c[0], 0) / rgb.length);
-  const avgG = Math.round(rgb.reduce((sum, c) => sum + c[1], 0) / rgb.length);
-  const avgB = Math.round(rgb.reduce((sum, c) => sum + c[2], 0) / rgb.length);
-  return `#${avgR.toString(16).padStart(2,'0')}${avgG.toString(16).padStart(2,'0')}${avgB.toString(16).padStart(2,'0')}`;
-}
-```
-
----
-
-## Archetype Implementation Details
-
-### Components to Delete/Create
-
-| Archetype | Delete | Create |
-|-----------|--------|--------|
-| **Brutalist** | BentoGrid, Terminal | `<BrutalistSection>` |
-| **Editorial** | BentoGrid, Terminal | `<EditorialLayout>`, `<PullQuote>` |
-| **Terminal** | Hero, BentoGrid | `<TerminalWindow>`, `<CodeBlock>` |
-| **Retro Arcade** | All modern components | `<PixelCard>`, `<ScoreDisplay>` |
-| **Geometric** | BentoGrid | `<ColorBlock>`, `<DiagonalSection>` |
-| **Luxury** | BentoGrid, Terminal | `<HeroImage>`, `<MinimalText>` |
-
-### Code Snippets by Archetype
-
-```tsx
-// 1. Brutalist: border-b-4 border-black sections
-<section className="border-b-4 border-black p-8">
-  <ul>{projects.map(p => <li className="border-l-4 border-black pl-4">{p.title}</li>)}</ul>
-</section>
-
-// 2. Editorial: asymmetric 70/30 with sidebar
-<div className="grid grid-cols-[2fr_1fr]">
-  <article><img /><h2 className="font-serif text-6xl">{title}</h2></article>
-  <aside className="border-l-2 pl-8"><PullQuote /></aside>
-</div>
-
-// 3. Terminal: CLI prompt aesthetic
-<div className="bg-black text-green-400 font-mono">
-  <div className="p-4 border-b border-green-400">
-    <span>user@portfolio:~$</span> cat about.txt
-  </div>
-</div>
-
-// 4. Arcade: chunky borders + score display
-<div className="border-8 border-cyan-500 bg-purple-900">
-  <div className="font-['Press_Start_2P']">SCORE: {count}</div>
-</div>
-
-// 5. Geometric: overlapping rotated shapes
-<div className="relative">
-  <div className="absolute w-2/3 h-96 bg-blue-600 -rotate-3" />
-  <div className="relative z-10 bg-yellow-400"><h1 className="text-8xl font-black" /></div>
-</div>
-
-// 6. Luxury: full-screen sections, extreme spacing
-<section className="h-screen flex items-center">
-  <h1 className="font-serif font-light text-7xl tracking-wider" />
-</section>
-<section className="py-64"><img className="h-[70vh]" /></section>
-```
+Synthesis: A dark, clean base (Linear) with playful accent moments (Poolsuite) and bold editorial typography (Verge). Not a mashup - a new thing.
 
 ---
 
 ## Typography
 
-### Font Pairings by Archetype
+### Choosing Fonts
 
-**1. Brutalist**
-- Header: Space Mono, Courier Prime, or IBM Plex Mono
-- Body: Space Mono (same font everywhere)
-- Scale: 14px, 24px, 48px, 72px (severe jumps)
+Based on the vibe:
 
-**2. Editorial**
-- Header: Playfair Display, Lora, or Cormorant Garamond
-- Body: Crimson Text, Spectral, or Source Serif Pro
-- Scale: 18px, 26px, 42px, 64px (refined steps)
+| Vibe | Font Direction |
+|------|----------------|
+| Technical/Developer | Monospace (JetBrains Mono, Fira Code) |
+| Editorial/Writer | Serif headers (Playfair, Lora, Cormorant) |
+| Modern/Startup | Clean sans (Inter, but use it well) |
+| Creative/Designer | Distinctive display fonts |
+| Minimal/Luxury | Light weights, lots of space |
 
-**3. Technical Terminal**
-- Header: JetBrains Mono, Fira Code, or Inconsolata
-- Body: JetBrains Mono (monospace only)
-- Scale: 13px, 16px, 20px, 32px (terminal sizing)
+### Font Rules
 
-**4. Retro Arcade**
-- Header: Press Start 2P, VT323, or Silkscreen
-- Body: Courier Prime, Inconsolata, or IBM Plex Mono
-- Scale: 12px, 18px, 28px, 48px (pixel-perfect)
-
-**5. Bold Geometric**
-- Header: Outfit, Manrope, or DM Sans
-- Body: Inter, Work Sans, or Nunito Sans
-- Scale: 16px, 32px, 56px, 88px (doubling)
-
-**6. Refined Luxury**
-- Header: Cormorant, Bodoni Moda, or Italiana
-- Body: Montserrat, Raleway, or Lato
-- Scale: 18px, 30px, 52px, 80px (elegant ratio)
-
-### Typography Rules
-
-- **NEVER** use generic fonts: Inter, Roboto, Arial, system fonts
-- **NEVER** converge on trendy fonts: Space Grotesk, Satoshi
-- **MUST** use the font pairing matching your archetype
-- **MUST** use different font weights for hierarchy (not all 400/500)
-- **MUST** vary font sizes by at least 3 distinct scales
+- **Pick 1-2 fonts max** - Constraint breeds creativity
+- **Create clear hierarchy** - Obvious difference between H1, H2, body
+- **Match the person** - A playful person shouldn't have corporate typography
 
 ---
 
-## Color Palettes
+## Color
 
-### Palettes by Archetype (pick ONE from your archetype)
+### Building a Palette
 
-**1. Brutalist**
-- Palette A: Pure black (#000), white (#fff), red accent (#ff0000)
-- Palette B: Dark gray (#1a1a1a), white (#fff), cyan (#00ffff)
-- Palette C: Black (#000), white (#fff), yellow (#ffff00)
+Start with the inspirations, then adjust:
 
-**2. Editorial**
-- Palette A: Cream (#f5f3ed), charcoal (#2d2d2d), burgundy (#8b2635)
-- Palette B: Off-white (#fafaf8), dark brown (#3e2723), olive (#6b705c)
-- Palette C: Warm gray (#e8e4de), navy (#1e3a5f), rust (#b7472a)
+1. **Background** - Sets the foundation
+2. **Text** - Must have good contrast
+3. **Accent** - Use sparingly for emphasis
 
-**3. Technical Terminal**
-- Palette A: Black (#0d0d0d), green (#00ff41), dark green bg (#001a0d)
-- Palette B: Navy (#0a0e27), amber (#ffb000), dark amber bg (#1a0f00)
-- Palette C: Charcoal (#1a1d29), cyan (#00d9ff), dark cyan bg (#001a1f)
+### Color Psychology
 
-**4. Retro Arcade**
-- Palette A: Deep purple (#1a0033), hot pink (#ff10f0), cyan (#00ffff)
-- Palette B: Black (#000000), neon green (#39ff14), magenta (#ff00ff)
-- Palette C: Dark blue (#0a0a2e), orange (#ff6600), yellow (#ffff00)
+| Color Direction | Feeling |
+|-----------------|---------|
+| Dark + muted accents | Serious, technical, focused |
+| Light + bold accents | Fresh, approachable, modern |
+| Monochrome | Minimal, confident, timeless |
+| Vibrant multi-color | Creative, energetic, bold |
 
-**5. Bold Geometric**
-- Palette A: White (#ffffff), black (#000000), electric blue (#0066ff)
-- Palette B: Light gray (#f0f0f0), charcoal (#2d2d2d), hot pink (#ff006e)
-- Palette C: Pale blue (#e6f2ff), navy (#0a1929), orange (#ff6b35)
+### What to Avoid
 
-**6. Refined Luxury**
-- Palette A: Champagne (#f5f0e8), charcoal (#2a2a2a), gold (#b8860b)
-- Palette B: Ivory (#fffef7), deep gray (#3a3a3a), silver (#a8a8a8)
-- Palette C: Linen (#faf7f2), espresso (#3e2723), rose gold (#b76e79)
-
-### Color Rules
-
-- Pick **ONE** palette from your archetype, use **ONLY** those 3 colors
-- Apply `color_intensity` slider (1-10) to adjust saturation/usage
-- Changing accent from `#5e6ad2` to `#7c3aed` **DOES NOT COUNT** as customization
-- **AVOID**: Purple gradients on white, generic dark mode with blue accents
+- Purple/blue gradient (overused in tech)
+- Generic dark mode (#0a0a0a + blue accent)
+- Too many colors competing
 
 ---
 
-## Layout Patterns
+## Layout
 
-### Spatial Composition by Archetype
+### Think Structure First
 
-**1. Brutalist**
-- Hard edges, no border-radius
-- Full-width sections with harsh dividers (thick borders)
-- Grid system: 3 or 5 columns (odd numbers)
-- No shadows, high contrast
-- Fixed positioning for headers/sidebars
+Before designing, ask:
+- How much content does this person have?
+- What's most important to show?
+- How do visitors want to consume this?
 
-**2. Editorial**
-- Asymmetric 2-column layout (70/30 split)
-- Large pull quotes breaking up text
-- Magazine-style margins (wide outer margins)
-- Serif headers left-aligned, body text justified
-- Image + text overlap
+### Layout Options
 
-**3. Technical Terminal**
-- Single column, fixed-width (80ch or 100ch)
-- ASCII borders and dividers
-- Monospace grid (characters as units)
-- Prompt-style navigation (> commands)
-- Fixed header with system info
+| Approach | Good For |
+|----------|----------|
+| Single page scroll | Simple, narrative flow |
+| Multi-page | Lots of content, distinct sections |
+| Single screen | Minimal, high impact |
+| Case study format | Project-focused, detailed work |
+| Timeline/narrative | Career progression story |
+| Interactive/exploratory | Creative technologists |
 
-**4. Retro Arcade**
-- Scanline effects and CRT glow
-- Chunky pixel borders (8px solid borders)
-- Neon text shadows and glow effects
-- Grid-based layout (multiples of 8px)
-- Arcade-style buttons with heavy box-shadow
-- Animated pixel art decorations
+### Breaking the Mold
 
-**5. Bold Geometric**
-- Color-blocked sections (alternating backgrounds)
-- Overlapping geometric shapes
-- Grid layout with sharp angles
-- Diagonal dividers between sections
-- CTAs as large geometric buttons
-
-**6. Refined Luxury**
-- Narrow column (max-width 700px), centered
-- Elegant dividers (thin lines, decorative)
-- Large letter-spacing on headers
-- Fade-in animations, slow and smooth
-- Excessive padding (150px+ section spacing)
+Don't default to sections. Consider:
+- What if there's no "About" section and the bio is woven throughout?
+- What if projects aren't in a grid but in a narrative?
+- What if the whole page is one big statement?
 
 ---
 
-## Design Preference Sliders
+## Spacing & Rhythm
 
-### Creativity (1-10)
+### Principles
 
-| Range | Style | Characteristics |
-|-------|-------|-----------------|
-| 1-3 | Traditional | Centered, symmetrical grid, standard fonts, conventional sections |
-| 4-7 | Modern | Asymmetric layouts, varied card sizes, Google Fonts with character |
-| 8-10 | Experimental | Unconventional layouts, custom fonts, scroll effects, 3D |
+- **Generous whitespace** > cramped content
+- **Consistent rhythm** - Pick a scale (8px, 16px, 32px, 64px) and stick to it
+- **Let content breathe** - Especially on luxury/minimal designs
 
-### Simplicity (1-10)
+### From Inspirations
 
-| Range | Style | Characteristics |
-|-------|-------|-----------------|
-| 1-3 | Dense | Many sections, sidebars, multiple columns, small margins |
-| 4-7 | Balanced | 3-4 main sections, good whitespace, breathable |
-| 8-10 | Minimal | 2-3 sections max, huge whitespace, single-column |
-
-### Playfulness (1-10)
-
-| Range | Style | Characteristics |
-|-------|-------|-----------------|
-| 1-3 | Serious | Corporate colors (navy, gray), formal copy, professional photos |
-| 4-7 | Approachable | Friendly but not silly, conversational tone |
-| 8-10 | Fun | Bright colors, illustrations, jokes, easter eggs, casual photos |
-
-### Animation (1-10)
-
-| Range | Style | Characteristics |
-|-------|-------|-----------------|
-| 1-3 | Static | Only hover states, no entrance animations |
-| 4-6 | Tasteful | Staggered page load, subtle transitions |
-| 7-8 | Choreographed | Scroll-triggered, complex entrance |
-| 9-10 | Motion-rich | Parallax, 3D transforms, continuous animation |
-
-### Color Intensity (1-10)
-
-| Range | Style | Characteristics |
-|-------|-------|-----------------|
-| 1-3 | Monochrome | Black/white/gray only, no accent colors |
-| 4-7 | Subtle | Dark theme with muted accents |
-| 8-10 | Vibrant | Bright saturated colors, gradients, color blocking |
+If inspirations have `sectionSpacing` and `padding` attributes, use them as starting points but adjust for the content.
 
 ---
 
-## Motion & Animation
+## Animation & Motion
 
-### Animation Slider Mapping
+Based on `design.animation` preference (1-10):
 
-- **1-3**: Static - only hover states, no entrance animations
-- **4-6**: Tasteful - staggered page load, subtle transitions
-- **7-8**: Choreographed - scroll-triggered, complex entrance
-- **9-10**: Motion-rich - parallax, 3D transforms, continuous animation
+| Level | Approach |
+|-------|----------|
+| 1-3 | Static, hover states only |
+| 4-6 | Subtle page transitions, gentle fades |
+| 7-8 | Scroll animations, choreographed entrance |
+| 9-10 | Rich motion, interactive elements |
 
 ### Tools
 
-- Framer Motion for React components (already installed)
-- CSS transitions for simple states
-- Scroll-triggered animations for sections
-- Hover states that surprise (not just color changes)
-
-### Principle
-
-Focus on high-impact moments: One well-orchestrated page load with staggered reveals (use animation-delay) creates more delight than scattered micro-interactions.
+- Tailwind transitions for simple effects
+- Framer Motion for complex animations
+- CSS animations for repeating motion
 
 ---
 
-## Visual Details
+## Preference Sliders
 
-### Creating Depth
+### Creativity (1-10)
+- Low: Safe, conventional, expected
+- High: Experimental, surprising, risky
 
-- Noise textures (grain overlays)
-- Layered transparencies
-- Dramatic shadows (not just `drop-shadow: 0 4px 6px`)
-- Gradient meshes for backgrounds
-- Custom cursors
-- Decorative borders (not `border: 1px solid #ccc`)
-- Geometric patterns
+### Simplicity (1-10)
+- Low: Dense, information-rich, complex
+- High: Minimal, focused, essential only
 
-### Avoiding AI Aesthetics
+### Playfulness (1-10)
+- Low: Serious, professional, formal
+- High: Fun, personality-driven, casual
 
-1. **Typography First**: Font choice sets the entire aesthetic
-2. **Use Odd Numbers**: 3 or 5 columns, not 4 or 6 - AI loves symmetry
-3. **Intentional Imperfection**: Slightly off-center, varied card heights, asymmetric spacing
-4. **Specific Not Generic**: "Things I've shipped" not "Check out my projects"
-5. **Human Photos**: Real photos only, no AI avatars or stock
-6. **Unique Micro-Copy**: Match user's actual workflow and voice
-7. **Content Hierarchy**: Lead with what makes them unique
-8. **Contextual Backgrounds**: No solid colors - use gradients, meshes, textures
-9. **Real Data**: Actual GitHub stars, real project names, genuine achievements
+### Color Intensity (1-10)
+- Low: Monochrome, muted, subtle
+- High: Vibrant, bold, saturated
 
 ---
 
-## Implementation Complexity
+## Making It Not Look AI-Generated
 
-Match code complexity to aesthetic vision:
-
-| Simplicity | Complexity Level | Approach |
-|------------|------------------|----------|
-| 8-10 | Minimal code | Perfect spacing, subtle typography, restrained animations |
-| 4-7 | Moderate | Good animations, interesting layout, polished details |
-| 1-3 | Elaborate | Extensive animations, layered effects, rich visual details |
+1. **Imperfection** - Slight asymmetry, varied spacing, human touches
+2. **Specificity** - Generic = AI. Specific = human.
+3. **Personality** - Let the person's voice come through
+4. **Unexpected choices** - Do something that surprises
+5. **Real content** - No placeholders, no lorem ipsum
 
 ---
 
-## Design Coherence Checklist
+## Execution Checklist
 
-Before completing, verify YES for all:
+Before calling the design done:
 
-- [ ] **Component Deletion**: Deleted at least 2 existing components and replaced them
-- [ ] **Layout Change**: Section order is different from default (Hero → Projects → Experience → Terminal)
-- [ ] **Typography Application**: Fonts are actually used in components (not just defined in layout.tsx)
-- [ ] **Structural Changes**: Modified component structure (grid layouts, wrapper elements)
-- [ ] **Archetype Compliance**: Layout matches archetype principles
-
-If ANY are NO, the design fails regardless of other factors.
+- [ ] Typography creates clear hierarchy
+- [ ] Colors work together and have meaning
+- [ ] Layout serves the content (not the other way around)
+- [ ] Spacing feels intentional
+- [ ] Mobile experience is considered
+- [ ] It doesn't look like a template
+- [ ] It feels right for THIS person
