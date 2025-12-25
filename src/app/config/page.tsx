@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowLeft, Download, Sparkles } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ArrowLeft, Download, Sparkles, Upload, FileText, Image, X, Check } from 'lucide-react';
 import Link from 'next/link';
 
 const ARCHETYPE_EXAMPLES = [
@@ -319,6 +319,46 @@ export default function ConfigPage() {
 
   const [selectedArchetype, setSelectedArchetype] = useState<number>(0);
   const [selectedExamples, setSelectedExamples] = useState<string[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<{ name: string; path: string; folder: string }[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, folder: 'documents' | 'images') => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+
+    for (const file of Array.from(files)) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', folder);
+
+      try {
+        const res = await fetch('/api/upload-material', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUploadedFiles(prev => [...prev, { name: data.name, path: data.path, folder }]);
+        }
+      } catch (err) {
+        console.error('Upload failed:', err);
+      }
+    }
+
+    setIsUploading(false);
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const removeUploadedFile = (path: string) => {
+    setUploadedFiles(prev => prev.filter(f => f.path !== path));
+  };
 
   const toggleExample = (url: string) => {
     setSelectedExamples((prev) =>
@@ -686,6 +726,86 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
                 className="w-full bg-neutral-900 border border-neutral-800 rounded-md px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-white/20 h-32 resize-none text-sm"
                 placeholder="Tell the AI about yourself, your goals, design inspirations..."
               />
+            </div>
+
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-500 mb-4">
+                Materials
+              </h2>
+              <p className="text-neutral-400 text-sm mb-4">
+                Upload resumes, headshots, or other files for the AI to use.
+              </p>
+
+              <div className="space-y-3">
+                {/* Documents upload */}
+                <label className="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-lg cursor-pointer hover:border-neutral-600 transition-colors">
+                  <div className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center">
+                    <FileText size={20} className="text-neutral-400" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium text-sm">Upload Documents</div>
+                    <div className="text-xs text-neutral-500">PDF, TXT, MD (resume, cover letter, etc.)</div>
+                  </div>
+                  <Upload size={16} className="text-neutral-500" />
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept=".pdf,.txt,.md,.doc,.docx"
+                    multiple
+                    onChange={(e) => handleFileUpload(e, 'documents')}
+                  />
+                </label>
+
+                {/* Images upload */}
+                <label className="flex items-center gap-3 p-4 bg-neutral-900 border border-neutral-800 rounded-lg cursor-pointer hover:border-neutral-600 transition-colors">
+                  <div className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center">
+                    <Image size={20} className="text-neutral-400" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium text-sm">Upload Images</div>
+                    <div className="text-xs text-neutral-500">JPG, PNG, WebP (headshot, projects, etc.)</div>
+                  </div>
+                  <Upload size={16} className="text-neutral-500" />
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept=".jpg,.jpeg,.png,.webp,.gif,.svg"
+                    multiple
+                    onChange={(e) => handleFileUpload(e, 'images')}
+                  />
+                </label>
+              </div>
+
+              {/* Upload status */}
+              {isUploading && (
+                <div className="mt-3 text-sm text-neutral-400 flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-neutral-600 border-t-white rounded-full animate-spin" />
+                  Uploading...
+                </div>
+              )}
+
+              {/* Uploaded files list */}
+              {uploadedFiles.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  <div className="text-xs text-neutral-500 uppercase tracking-wider">Uploaded</div>
+                  {uploadedFiles.map((file) => (
+                    <div
+                      key={file.path}
+                      className="flex items-center gap-2 p-2 bg-neutral-900/50 rounded-md text-sm"
+                    >
+                      <Check size={14} className="text-green-500" />
+                      <span className="flex-1 truncate text-neutral-300">{file.name}</span>
+                      <span className="text-xs text-neutral-600">{file.folder}</span>
+                      <button
+                        onClick={() => removeUploadedFile(file.path)}
+                        className="p-1 hover:bg-neutral-800 rounded transition-colors"
+                      >
+                        <X size={14} className="text-neutral-500" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
