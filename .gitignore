@@ -46,6 +46,7 @@ materials/documents/*
 
 # populated user data
 src/data/user.json
+profile.yaml
 
 # vercel
 .vercel
