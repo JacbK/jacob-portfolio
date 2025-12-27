@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Source_Serif_4, Inter } from "next/font/google";
 import "./globals.css";
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const inter = Inter({
   variable: "--font-sans",
@@ -8,26 +14,14 @@ const inter = Inter({
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "Persona | AI-Powered Portfolio",
-  description: "A personal portfolio website built with AI assistance using Claude Code.",
-  keywords: ["portfolio", "developer", "engineer", "projects"],
-  authors: [{ name: "Persona" }],
+  title: "Jacob Kieser",
+  description: "Software engineer. Previously Uber and Palantir.",
+  authors: [{ name: "Jacob Kieser" }],
   openGraph: {
-    title: "Persona | AI-Powered Portfolio",
-    description: "A personal portfolio website built with AI assistance using Claude Code.",
+    title: "Jacob Kieser",
+    description: "Software engineer. Previously Uber and Palantir.",
     type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Persona | AI-Powered Portfolio",
-    description: "A personal portfolio website built with AI assistance using Claude Code.",
   },
 };
 
@@ -37,9 +31,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-neutral-950 text-white`}
+        className={`${sourceSerif.variable} ${inter.variable} antialiased bg-neutral-950 text-neutral-100`}
       >
         {children}
       </body>

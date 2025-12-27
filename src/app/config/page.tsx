@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { ArrowLeft, Download, Sparkles, Upload, FileText, Image, X, Check, Terminal, ArrowRight } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { ArrowLeft, Download, Sparkles, Upload, FileText, Image, X, Check, Terminal, ArrowRight, ChevronRight, Loader2, Edit3 } from 'lucide-react';
 import Link from 'next/link';
+
+type ConfigStep = 'basics' | 'design' | 'review';
 
 const ARCHETYPE_EXAMPLES = [
   {
@@ -320,7 +322,64 @@ export default function ConfigPage() {
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; path: string; folder: string }[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [currentStep, setCurrentStep] = useState<ConfigStep>('basics');
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasExistingConfig, setHasExistingConfig] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load existing config on mount
+  useEffect(() => {
+    async function loadExistingConfig() {
+      try {
+        const res = await fetch('/api/read-config');
+        const data = await res.json();
+
+        if (data.exists && data.config) {
+          const c = data.config;
+          setHasExistingConfig(true);
+
+          // Populate form with existing values
+          setConfig({
+            name: c.name || '',
+            email: c.email || '',
+            github: c.github || '',
+            linkedin: c.linkedin || '',
+            cli: c.cli || 'claude-code',
+            design: {
+              creativity: c.design?.creativity ?? 5,
+              simplicity: c.design?.simplicity ?? 7,
+              playfulness: c.design?.playfulness ?? 4,
+              animation: c.design?.animation ?? 5,
+              color_intensity: c.design?.color_intensity ?? 4,
+            },
+            content: {
+              tone: c.content?.tone || 'conversational',
+              length: c.content?.length || 'balanced',
+              focus: c.content?.focus || 'projects',
+            },
+            ai: {
+              quality_bar: c.ai?.quality_bar ?? 7,
+              research_depth: c.ai?.research_depth ?? 6,
+              copy_creativity: c.ai?.copy_creativity ?? 5,
+            },
+            notes: c.notes || '',
+          });
+
+          // Load design inspirations if they exist
+          if (c.design_inspirations && Array.isArray(c.design_inspirations)) {
+            const urls = c.design_inspirations.map((i: { url?: string }) => i.url).filter(Boolean);
+            setSelectedExamples(urls);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load config:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadExistingConfig();
+  }, []);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, folder: 'documents' | 'images') => {
     const files = e.target.files;
@@ -529,6 +588,26 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
     return null;
   }
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 size={32} className="animate-spin mx-auto text-neutral-400" />
+          <p className="text-neutral-500">Loading configuration...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const steps = [
+    { id: 'basics' as const, label: 'Basics', description: 'Name & contact info' },
+    { id: 'design' as const, label: 'Design', description: 'Style & inspirations' },
+    { id: 'review' as const, label: 'Review', description: 'Save & generate' },
+  ];
+
+  const currentStepIndex = steps.findIndex(s => s.id === currentStep);
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Success Modal */}
@@ -580,69 +659,84 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
 
       {/* Header */}
       <header className="border-b border-neutral-800 bg-neutral-950">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft size={20} />
-            <span className="text-sm font-medium">Back</span>
-          </Link>
-          <h1 className="text-xl font-bold">Portfolio Config</h1>
-          <div className="flex gap-3">
-            <button
-              onClick={async () => {
-                const yaml = generateYaml();
-                try {
-                  const res = await fetch('/api/save-config', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ yaml })
-                  });
-                  if (res.ok) {
-                    setShowSuccessModal(true);
-                  } else {
-                    alert('Failed to save. Try Download instead.');
-                  }
-                } catch {
-                  alert('Failed to save. Try Download instead.');
-                }
-              }}
-              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between mb-6">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
             >
-              <Download size={16} />
-              Save to Project
-            </button>
-            <button
-              onClick={downloadConfig}
-              className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md hover:bg-neutral-200 transition-colors text-sm font-medium"
-            >
-              <Download size={16} />
-              Download
-            </button>
+              <ArrowLeft size={20} />
+              <span className="text-sm font-medium">Back</span>
+            </Link>
+            <div className="flex items-center gap-3">
+              {hasExistingConfig && (
+                <span className="flex items-center gap-2 text-sm text-amber-500 bg-amber-500/10 px-3 py-1 rounded-full">
+                  <Edit3 size={14} />
+                  Editing existing config
+                </span>
+              )}
+              <h1 className="text-xl font-bold">Portfolio Config</h1>
+            </div>
+            <div className="w-20" /> {/* Spacer for balance */}
+          </div>
+
+          {/* Step Navigation */}
+          <div className="flex items-center justify-center gap-2">
+            {steps.map((step, index) => (
+              <div key={step.id} className="flex items-center">
+                <button
+                  onClick={() => setCurrentStep(step.id)}
+                  className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                    currentStep === step.id
+                      ? 'bg-white text-black'
+                      : index < currentStepIndex
+                      ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
+                      : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700'
+                  }`}
+                >
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium ${
+                    currentStep === step.id
+                      ? 'bg-black text-white'
+                      : index < currentStepIndex
+                      ? 'bg-green-600 text-white'
+                      : 'bg-neutral-700 text-neutral-400'
+                  }`}>
+                    {index < currentStepIndex ? <Check size={14} /> : index + 1}
+                  </span>
+                  <div className="text-left">
+                    <div className="font-medium text-sm">{step.label}</div>
+                    <div className={`text-xs ${currentStep === step.id ? 'text-neutral-600' : 'text-neutral-500'}`}>
+                      {step.description}
+                    </div>
+                  </div>
+                </button>
+                {index < steps.length - 1 && (
+                  <ChevronRight size={20} className="mx-2 text-neutral-600" />
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Info Banner */}
-        <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 mb-12">
-          <div className="flex gap-3">
-            <Sparkles size={24} className="text-neutral-500 flex-shrink-0 mt-0.5" />
-            <div>
-              <h2 className="font-bold text-lg mb-2">Most fields are optional</h2>
-              <p className="text-neutral-400 text-sm leading-relaxed">
-                Only your <span className="text-white font-medium">name</span> is required.
-                The AI will research and fill in everything else.
-              </p>
-              <p className="text-neutral-500 text-sm mt-2">
-                Prefer code? Edit <code className="bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-300">profile.yaml</code> directly in your text editor.
-              </p>
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        {/* Step 1: Basics */}
+        {currentStep === 'basics' && (
+          <>
+            <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 mb-8">
+              <div className="flex gap-3">
+                <Sparkles size={24} className="text-neutral-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h2 className="font-bold text-lg mb-2">Let&apos;s start with the basics</h2>
+                  <p className="text-neutral-400 text-sm leading-relaxed">
+                    Only your <span className="text-white font-medium">name</span> is required.
+                    The AI will research and fill in everything else.
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* Column 1: Basic Info */}
           <div className="space-y-6">
             <div>
@@ -853,9 +947,37 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
               )}
             </div>
           </div>
+            </div>
 
-          {/* Column 2: Visual Style */}
-          <div className="lg:col-span-2">
+            {/* Next Step Button */}
+            <div className="flex justify-end mt-8">
+              <button
+                onClick={() => setCurrentStep('design')}
+                className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-neutral-200 transition-colors"
+              >
+                Next: Design
+                <ArrowRight size={18} />
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* Step 2: Design */}
+        {currentStep === 'design' && (
+          <>
+            <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 mb-8">
+              <div className="flex gap-3">
+                <Sparkles size={24} className="text-neutral-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h2 className="font-bold text-lg mb-2">Choose your design direction</h2>
+                  <p className="text-neutral-400 text-sm leading-relaxed">
+                    Select websites that inspire you. The AI will synthesize their styles into something unique for you.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          <div>
             <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-500 mb-4">
               Design Inspirations
             </h2>
@@ -994,14 +1116,113 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Bottom CTA */}
-        <div className="mt-12 bg-neutral-900 border border-neutral-800 rounded-lg p-8 text-center">
-          <h3 className="text-xl font-bold mb-2">Ready to build?</h3>
-          <p className="text-neutral-400 mb-6">
-            Save your config and run the setup script to generate your portfolio
-          </p>
+            {/* Navigation Buttons */}
+            <div className="flex justify-between mt-8">
+              <button
+                onClick={() => setCurrentStep('basics')}
+                className="flex items-center gap-2 bg-neutral-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-neutral-700 transition-colors"
+              >
+                <ArrowLeft size={18} />
+                Back: Basics
+              </button>
+              <button
+                onClick={() => setCurrentStep('review')}
+                className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-neutral-200 transition-colors"
+              >
+                Next: Review & Save
+                <ArrowRight size={18} />
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* Step 3: Review */}
+        {currentStep === 'review' && (
+          <>
+            <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 mb-8">
+              <div className="flex gap-3">
+                <Check size={24} className="text-green-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h2 className="font-bold text-lg mb-2">Review & Save</h2>
+                  <p className="text-neutral-400 text-sm leading-relaxed">
+                    {hasExistingConfig
+                      ? 'Review your changes and save to update your config.'
+                      : 'Review your choices and save to generate your portfolio.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6">
+                <h3 className="font-semibold mb-4">Basic Info</h3>
+                <dl className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">Name</dt>
+                    <dd>{config.name || <span className="text-neutral-600">Not set</span>}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">Email</dt>
+                    <dd>{config.email || <span className="text-neutral-600">Not set</span>}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">GitHub</dt>
+                    <dd>{config.github || <span className="text-neutral-600">Not set</span>}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">AI Tool</dt>
+                    <dd>{config.cli}</dd>
+                  </div>
+                </dl>
+                <button
+                  onClick={() => setCurrentStep('basics')}
+                  className="mt-4 text-sm text-neutral-400 hover:text-white transition-colors"
+                >
+                  Edit basics →
+                </button>
+              </div>
+
+              <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6">
+                <h3 className="font-semibold mb-4">Design</h3>
+                <dl className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">Inspirations</dt>
+                    <dd>{selectedExamples.length} selected</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">Creativity</dt>
+                    <dd>{config.design.creativity}/10</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">Simplicity</dt>
+                    <dd>{config.design.simplicity}/10</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-neutral-500">Animation</dt>
+                    <dd>{config.design.animation}/10</dd>
+                  </div>
+                </dl>
+                <button
+                  onClick={() => setCurrentStep('design')}
+                  className="mt-4 text-sm text-neutral-400 hover:text-white transition-colors"
+                >
+                  Edit design →
+                </button>
+              </div>
+            </div>
+
+            {/* Save Section */}
+            <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-8 text-center">
+              <h3 className="text-xl font-bold mb-2">
+                {hasExistingConfig ? 'Save Changes' : 'Ready to build?'}
+              </h3>
+              <p className="text-neutral-400 mb-6">
+                {hasExistingConfig
+                  ? 'Your changes will be saved to profile.yaml'
+                  : 'Save your config and the AI will start building your portfolio'}
+              </p>
           <div className="flex items-center justify-center gap-4">
             <button
               onClick={async () => {
@@ -1033,12 +1254,28 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
               <Download size={20} />
               Download
             </button>
-            <div className="text-neutral-600">→</div>
-            <div className="text-sm text-neutral-400 font-mono">
-              ./bin/setup.sh
-            </div>
           </div>
-        </div>
+
+              {!hasExistingConfig && (
+                <div className="flex items-center justify-center gap-3 mt-4 text-sm text-neutral-500">
+                  <span>Then run</span>
+                  <code className="bg-neutral-800 px-2 py-1 rounded font-mono text-neutral-300">./bin/setup.sh</code>
+                </div>
+              )}
+            </div>
+
+            {/* Back Button */}
+            <div className="flex justify-start mt-8">
+              <button
+                onClick={() => setCurrentStep('design')}
+                className="flex items-center gap-2 bg-neutral-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-neutral-700 transition-colors"
+              >
+                <ArrowLeft size={18} />
+                Back: Design
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

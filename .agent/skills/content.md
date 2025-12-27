@@ -10,7 +10,7 @@ Based on `content.tone` in profile.yaml:
 
 | Tone | Style | Example |
 |------|-------|---------|
-| professional | Formal, third-person | "Sarah Chen is a software architect specializing in..." |
+| professional | Formal, third-person | "Jacob Kieser is a software architect specializing in..." |
 | conversational | Casual first-person | "I build tools that make developers' lives easier." |
 | technical | Detailed, jargon-appropriate | "Implemented a distributed cache layer using Redis Cluster..." |
 | creative | Storytelling, personality | "It started with a broken deploy script at 2am..." |

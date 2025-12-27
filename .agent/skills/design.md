@@ -65,50 +65,17 @@ Synthesis: A dark, clean base (Linear) with playful accent moments (Poolsuite) a
 
 ## Typography
 
-### Choosing Fonts
+See `.agent/skills/fonts.md` for font selection.
 
-Based on the vibe:
-
-| Vibe | Font Direction |
-|------|----------------|
-| Technical/Developer | Monospace (JetBrains Mono, Fira Code) |
-| Editorial/Writer | Serif headers (Playfair, Lora, Cormorant) |
-| Modern/Startup | Clean sans (Inter, but use it well) |
-| Creative/Designer | Distinctive display fonts |
-| Minimal/Luxury | Light weights, lots of space |
-
-### Font Rules
-
-- **Pick 1-2 fonts max** - Constraint breeds creativity
-- **Create clear hierarchy** - Obvious difference between H1, H2, body
-- **Match the person** - A playful person shouldn't have corporate typography
+**Rules**: 1-2 fonts max, clear hierarchy, match the person's vibe.
 
 ---
 
 ## Color
 
-### Building a Palette
+See `.agent/skills/colors.md` for palettes.
 
-Start with the inspirations, then adjust:
-
-1. **Background** - Sets the foundation
-2. **Text** - Must have good contrast
-3. **Accent** - Use sparingly for emphasis
-
-### Color Psychology
-
-| Color Direction | Feeling |
-|-----------------|---------|
-| Dark + muted accents | Serious, technical, focused |
-| Light + bold accents | Fresh, approachable, modern |
-| Monochrome | Minimal, confident, timeless |
-| Vibrant multi-color | Creative, energetic, bold |
-
-### What to Avoid
-
-- Purple/blue gradient (overused in tech)
-- Generic dark mode (#0a0a0a + blue accent)
-- Too many colors competing
+**Rules**: 60-30-10 ratio, good contrast, avoid purple/blue gradients.
 
 ---
 
