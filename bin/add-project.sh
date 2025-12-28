@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Add Project Agent: Add or edit a single project
+# Add Project: Add or edit a single project
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-AGENT_FILE="$PROJECT_DIR/.agent/agents/update-project.md"
 
 # Colors
 CYAN='\033[0;36m'
@@ -27,12 +26,7 @@ echo -e "${NC}"
 echo -e "${GREEN}Add or edit a project in your portfolio${NC}"
 echo ""
 
-if [ ! -f "$AGENT_FILE" ]; then
-    echo "Error: Project agent not found at $AGENT_FILE"
-    exit 1
-fi
-
 cd "$PROJECT_DIR"
 
-# Launch Claude Code with update-project agent instructions
-exec claude chat -f "$AGENT_FILE" -m "I want to add or update a project in my portfolio."
+# Launch Claude Code with update instructions
+exec claude --print "Read .agent/update.md for guidelines. I want to add or update a project in my portfolio."

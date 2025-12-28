@@ -1,6 +1,8 @@
 # Skill: Fonts
 
-Reference for selecting distinctive typography. Avoid overused fonts (Helvetica, Arial, Roboto, Open Sans, Montserrat, Playfair Display, Poppins).
+Reference for selecting distinctive typography. Avoid overused fonts (Helvetica, Arial, Roboto, Open Sans, Montserrat, Playfair Display, Poppins, Lato).
+
+All fonts below are **free via Google Fonts** and work with `next/font/google`.
 
 ---
 
@@ -8,13 +10,13 @@ Reference for selecting distinctive typography. Avoid overused fonts (Helvetica,
 
 | Vibe | Fonts |
 |------|-------|
-| Editorial/Literary | Mrs Eaves, Arnhem, Romie, PP Editorial New |
-| Luxury/Fashion | Filosofia, Hatton, Quadraat |
-| Modern Clean | Söhne, Nave, Gamuth Sans |
-| Bold/Impact | Druk, Obviously, SWORDFISH |
-| Playful | Gooper, Jubel, Vitamiin, Euchre |
-| Technical/Future | Neue Machina, Halvar, Right Grotesque Mono |
-| Understated | Milligram, Cina Sans, Retail |
+| Editorial/Literary | Newsreader, Lora, EB Garamond, Cormorant, Spectral |
+| Luxury/Fashion | Cormorant Garamond, Bodoni Moda, Libre Bodoni, Fraunces |
+| Modern Clean | Space Grotesk, DM Sans, Plus Jakarta Sans, Manrope |
+| Bold/Impact | Bricolage Grotesque, League Spartan, Syne, Outfit |
+| Playful | Rubik, Nunito, Comfortaa, Quicksand |
+| Technical/Future | Space Mono, JetBrains Mono, Fira Code, IBM Plex Mono |
+| Understated | Mulish, Chivo, Proza Libre, Work Sans |
 
 ---
 
@@ -22,13 +24,20 @@ Reference for selecting distinctive typography. Avoid overused fonts (Helvetica,
 
 | Font | Use Case |
 |------|----------|
-| Quadraat | Sophisticated authority, editorial |
-| Mrs Eaves | Literary, book covers (display only—loose spacing) |
-| Filosofia | Luxury, fashion-adjacent, refined Bodoni |
-| Arnhem | Long-form text, journalism, lots of content |
-| Romie | Elegant editorial, multilingual (300+ languages) |
-| ITC Tiffany | Bold headlines, vintage-modern tension |
-| PP Editorial New | Magazine layouts, fashion portfolios |
+| Cormorant | High-contrast elegance, editorial headers, luxury feel |
+| Cormorant Garamond | Sophisticated authority, refined editorial |
+| Lora | Elegant body text, blog content, readable at small sizes |
+| EB Garamond | Classic book typography, long-form reading |
+| Newsreader | Magazine/editorial layouts, journalistic feel |
+| Spectral | Balanced body text with character |
+| Fraunces | Modern variable serif with personality, 9 weights |
+| Bodoni Moda | Didone-style headlines, fashion/luxury |
+| Libre Bodoni | Clean Bodoni alternative, display use |
+| Libre Baskerville | Literary feel (Mrs Eaves alternative) |
+| Young Serif | Contemporary headlines with warmth |
+| Instrument Serif | Modern refined serif, editorial |
+| Alegreya | Distinctive letterforms, sophisticated portfolios |
+| BioRhyme | Slab serif for editorial layouts, 7 weights |
 
 ---
 
@@ -36,15 +45,20 @@ Reference for selecting distinctive typography. Avoid overused fonts (Helvetica,
 
 | Font | Use Case |
 |------|----------|
-| Söhne | Contemporary branding, design portfolios |
-| Nave | Clean with depth, contemplative vibes |
-| Gamuth Sans | Approachable + professional, UI, branding |
-| Push | Bold Swiss typography, creative directors |
-| Halvar | Space-constrained, UI, German precision |
-| Vitamiin | Friendly, casual branding |
-| Milligram | Understated Akzidenz alternative |
-| Cina Sans | Helvetica energy with more character |
-| Retail | Product-focused, e-commerce |
+| Space Grotesk | Contemporary branding, geometric personality |
+| DM Sans | Humanist design, Futura alternative, distinctive "G" |
+| Plus Jakarta Sans | Modern UI, distinctive character |
+| Manrope | Clean geometric sans, 7 weights |
+| Outfit | Geometric humanist, modern portfolios |
+| Bricolage Grotesque | Bold headlines, expressive with personality |
+| Syne | Tactile uniqueness, creative portfolios |
+| Chivo | Versatile workhorse, 9 weights |
+| Work Sans | Screen-optimized, friendly professional |
+| Mulish | Humanist-geometric hybrid, variable font |
+| Epilogue | Geometric with warmth |
+| Proza Libre | Understated sophistication, editorial |
+| League Spartan | Condensed geometric, impactful headers |
+| Inter | UI-focused, excellent legibility (use sparingly - becoming common) |
 
 ---
 
@@ -52,24 +66,28 @@ Reference for selecting distinctive typography. Avoid overused fonts (Helvetica,
 
 | Font | Use Case |
 |------|----------|
-| Druk | Impactful headlines, editorial power |
-| Obviously | Expressive headlines, personality |
-| Hatton | Luxury editorial, sophistication |
-| SWORDFISH | 1920s avant-garde, posters |
-| Neue Machina | Tech/futuristic, robotics-inspired |
-| Gooper | Quirky, bouncy, unconventional |
-| Jubel | Celebratory, joyful |
-| Euchre | Playful contrast, sparkle |
+| Bricolage Grotesque | Expressive headlines, bold personality |
+| Fraunces | Variable serif with dramatic weight range |
+| Instrument Serif | Modern editorial headlines |
+| Young Serif | Warm contemporary headers |
+| Abril Fatface | Bold Didone-style display |
+| Rubik Glitch | Experimental/tech aesthetic |
+| Silkscreen | Retro pixel/terminal aesthetic |
+| Aboreto | Distinctive display style |
+| Red Rose | Expressive headlines |
 
 ---
 
-## Monospace & Slab
+## Monospace
 
 | Font | Use Case |
 |------|----------|
-| Right Grotesque Mono | Developer portfolios with personality |
-| Aleo | Friendly slab, display + text |
-| Ploquine | Editorial slab, grounded |
+| Space Mono | Developer portfolios, distinctive style |
+| JetBrains Mono | Code display, excellent legibility |
+| Fira Code | Programming with ligatures |
+| IBM Plex Mono | Technical documentation, professional |
+| Inconsolata | Classic code aesthetic |
+| Source Code Pro | Clean, versatile monospace |
 
 ---
 
@@ -77,17 +95,50 @@ Reference for selecting distinctive typography. Avoid overused fonts (Helvetica,
 
 | Person | Direction |
 |--------|-----------|
-| Writer/Editor | Mrs Eaves, Arnhem, Romie |
-| Designer | Söhne, Obviously, Druk |
-| Developer | Right Grotesque Mono, Neue Machina |
-| Strategist | Quadraat, Halvar, Gamuth Sans |
-| Artist | Gooper, SWORDFISH, Jubel |
-| Luxury/Fashion | Filosofia, Hatton, PP Editorial New |
+| Writer/Editor | Newsreader, Lora, EB Garamond, Spectral |
+| Designer | Space Grotesk, Bricolage Grotesque, Fraunces |
+| Developer | Space Mono, JetBrains Mono, IBM Plex Mono |
+| Strategist | Cormorant Garamond, Chivo, DM Sans |
+| Artist | Syne, Rubik, Instrument Serif |
+| Luxury/Fashion | Bodoni Moda, Cormorant, Libre Bodoni |
 
 ---
 
-## Pairing
+## Recommended Pairings
+
+| Style | Display + Body |
+|-------|----------------|
+| Editorial | Instrument Serif + DM Sans |
+| Modern | Bricolage Grotesque + Space Grotesk |
+| Literary | Cormorant + Spectral |
+| Tech | Space Mono + Inter |
+| Luxury | Bodoni Moda + Manrope |
+| Creative | Fraunces + Work Sans |
+| Minimal | Young Serif + Plus Jakarta Sans |
+
+---
+
+## Usage in Next.js
+
+```tsx
+import { Space_Grotesk, Newsreader } from 'next/font/google';
+
+const heading = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-heading'
+});
+
+const body = Newsreader({
+  subsets: ['latin'],
+  variable: '--font-body'
+});
+```
+
+---
+
+## Pairing Rules
 
 - Contrast categories: serif display + sans body (or reverse)
-- One dominant, one supporting
-- Example pairings: Druk + Arnhem, Mrs Eaves + Söhne, Obviously + Gamuth Sans
+- One dominant, one supporting (never compete for attention)
+- Match x-heights when possible for visual harmony
+- Limit to 2 fonts maximum per site

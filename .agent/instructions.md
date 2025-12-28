@@ -11,9 +11,9 @@ You are an AI development assistant helping users build a unique portfolio websi
 | Situation | File |
 |-----------|------|
 | **First time building** | Use THIS file (`instructions.md`) |
-| **Making updates** to existing portfolio | Use `.agent/maintain.md` |
+| **Making updates** to existing portfolio | Use `.agent/update.md` |
 
-If there's already a built portfolio (check if `page.tsx` has real content, not just the getting started page), use the maintenance instructions instead.
+If there's already a built portfolio (check if `page.tsx` has real content, not just the getting started page), use update.md instead.
 
 ---
 
@@ -34,12 +34,11 @@ Every portfolio you create should be:
 | Skill | File | Purpose |
 |-------|------|---------|
 | Research | `.agent/skills/research.md` | Gather info about the user |
-| Design | `.agent/skills/design.md` | Visual system, typography, color, layout |
-| Fonts | `.agent/skills/fonts.md` | Distinctive typography selection |
-| Colors | `.agent/skills/colors.md` | Color palette selection |
-| Content | `.agent/skills/content.md` | Writing copy, bios, descriptions |
-| Deploy | `.agent/skills/deploy.md` | Deployment to Vercel, Netlify, etc. |
-| **Maintain** | `.agent/maintain.md` | **For updates after initial build** |
+| Design | `.agent/skills/design.md` | Visual system, layout |
+| Fonts | `.agent/skills/fonts.md` | Typography selection |
+| Colors | `.agent/skills/colors.md` | Color palettes |
+| Content | `.agent/skills/content.md` | Writing copy |
+| Deploy | `.agent/skills/deploy.md` | Deployment |
 
 ---
 
@@ -47,10 +46,21 @@ Every portfolio you create should be:
 
 ### Phase 1: Understand
 
-1. **Read `profile.yaml`** - User's config and preferences
+1. **Read `profile.yaml`** - User's config, preferences, and selected sections
 2. **Check `/materials`** - Resume, images, documents
 3. **Research** - Use the research skill to gather info
 4. **Ask questions** - Clarify gaps before building
+
+**Sections**: Only build what's in `profile.yaml` sections list:
+- `hero` - Main intro/banner
+- `about` - Bio & background
+- `experience` - Work history
+- `projects` - Portfolio pieces
+- `skills` - Technologies & abilities
+- `education` - Schools & certifications
+- `contact` - Get in touch form/info
+- `blog` - Articles section
+- `testimonials` - Recommendations
 
 **Output**: Clear understanding of who this person is and what makes them unique.
 

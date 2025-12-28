@@ -297,13 +297,27 @@ export default function ConfigPage() {
     email: '',
     github: '',
     linkedin: '',
+    twitter: '',
+    website: '',
     cli: 'claude-code',
+    sections: {
+      hero: true,
+      about: true,
+      experience: true,
+      projects: true,
+      skills: false,
+      education: false,
+      contact: true,
+      blog: false,
+      testimonials: false,
+    },
     design: {
       creativity: 5,
       simplicity: 7,
       playfulness: 4,
       animation: 5,
       color_intensity: 4,
+      notes: '',
     },
     content: {
       tone: 'conversational',
@@ -344,13 +358,27 @@ export default function ConfigPage() {
             email: c.email || '',
             github: c.github || '',
             linkedin: c.linkedin || '',
+            twitter: c.twitter || '',
+            website: c.website || '',
             cli: c.cli || 'claude-code',
+            sections: {
+              hero: c.sections?.hero ?? true,
+              about: c.sections?.about ?? true,
+              experience: c.sections?.experience ?? true,
+              projects: c.sections?.projects ?? true,
+              skills: c.sections?.skills ?? false,
+              education: c.sections?.education ?? false,
+              contact: c.sections?.contact ?? true,
+              blog: c.sections?.blog ?? false,
+              testimonials: c.sections?.testimonials ?? false,
+            },
             design: {
               creativity: c.design?.creativity ?? 5,
               simplicity: c.design?.simplicity ?? 7,
               playfulness: c.design?.playfulness ?? 4,
               animation: c.design?.animation ?? 5,
               color_intensity: c.design?.color_intensity ?? 4,
+              notes: c.design?.notes || '',
             },
             content: {
               tone: c.content?.tone || 'conversational',
@@ -545,11 +573,20 @@ export default function ConfigPage() {
         }).join('')}`
       : '';
 
+    const enabledSections = Object.entries(config.sections)
+      .filter(([, enabled]) => enabled)
+      .map(([key]) => key);
+
     return `name: "${config.name || 'Your Name'}"
 email: "${config.email}"
 github: "${config.github}"
 linkedin: "${config.linkedin}"
-cli: "${config.cli}"  # AI tool: claude-code, codex, gemini, aider, cursor, other
+twitter: "${config.twitter}"
+website: "${config.website}"
+cli: "${config.cli}"
+
+sections:
+${enabledSections.map(s => `  - ${s}`).join('\n')}
 
 design:
   creativity: ${config.design.creativity}
@@ -810,6 +847,45 @@ ${config.notes.split('\n').map((line) => `  ${line}`).join('\n')}
                   </select>
                   <p className="text-xs text-neutral-500 mt-1.5">Which AI coding assistant will build your portfolio?</p>
                 </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-500 mb-4">
+                Sections
+              </h2>
+              <p className="text-neutral-400 text-sm mb-4">
+                Choose what to include on your portfolio.
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { key: 'hero', label: 'Hero', desc: 'Main intro banner' },
+                  { key: 'about', label: 'About', desc: 'Bio & background' },
+                  { key: 'experience', label: 'Experience', desc: 'Work history' },
+                  { key: 'projects', label: 'Projects', desc: 'Portfolio pieces' },
+                  { key: 'skills', label: 'Skills', desc: 'Tech & abilities' },
+                  { key: 'education', label: 'Education', desc: 'Schools & certs' },
+                  { key: 'contact', label: 'Contact', desc: 'Get in touch' },
+                  { key: 'blog', label: 'Blog', desc: 'Articles & posts' },
+                  { key: 'testimonials', label: 'Testimonials', desc: 'Recommendations' },
+                ].map(({ key, label, desc }) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setConfig({
+                      ...config,
+                      sections: { ...config.sections, [key]: !config.sections[key as keyof typeof config.sections] }
+                    })}
+                    className={`p-3 rounded-lg border text-left transition-all ${
+                      config.sections[key as keyof typeof config.sections]
+                        ? 'bg-white/10 border-white/30 text-white'
+                        : 'bg-neutral-900 border-neutral-800 text-neutral-500 hover:border-neutral-600'
+                    }`}
+                  >
+                    <div className="font-medium text-sm">{label}</div>
+                    <div className="text-xs opacity-60">{desc}</div>
+                  </button>
+                ))}
               </div>
             </div>
 
