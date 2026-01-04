@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center px-6">
@@ -35,12 +33,6 @@ export default function Home() {
           </code>
         </div>
 
-        <Link
-          href="/config"
-          className="inline-block text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
-        >
-          Or configure manually &rarr;
-        </Link>
       </div>
     </main>
   );
